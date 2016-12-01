@@ -2,19 +2,15 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "module": "commonjs",
-    "target": "ES5",
+    "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "declaration": true,
+    "lib": ["es6", "dom"],
     "outDir": "./dist"
   },
   "files": [
-    "typings/index.d.ts",
     "index.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
   ]
 }
