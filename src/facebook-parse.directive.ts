@@ -10,6 +10,8 @@ import { FacebookService } from './facebook.service';
 export class FacebookParseDirective implements OnInit, AfterViewInit {
   @Input() threshold: number = 0;
 
+  @Input() container: HTMLElement | Window;
+
   constructor(private elementRef: ElementRef, private fb: FacebookService) { }
 
   ngOnInit() { }
@@ -19,7 +21,7 @@ export class FacebookParseDirective implements OnInit, AfterViewInit {
   }
 
   @HostListener('window:scroll') @HostListener('window:resize') lazyload() {
-    if (inViewport(this.elementRef.nativeElement, {threshold: this.threshold})) {
+    if (inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
       this.load();
     }
   }

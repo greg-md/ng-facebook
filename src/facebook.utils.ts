@@ -30,7 +30,7 @@ export function offset(elem: HTMLElement) {
 }
 
 export interface ViewportSettings {
-    container?: any;
+    container?: HTMLElement | Window;
     threshold?: number;
 }
 
@@ -39,10 +39,10 @@ export function aboveTheTop(element: HTMLElement, settings: ViewportSettings = {
         container = settings.container || window,
         threshold = settings.threshold || 0;
 
-    if (container === window) {
-        fold = window.scrollY;
-    } else {
+    if (container instanceof HTMLElement) {
         fold = offset(container).top;
+    } else {
+        fold = window.scrollY;
     }
 
     return fold >= offset(element).top + threshold + element.offsetHeight;
@@ -53,10 +53,10 @@ export function rightOfFold(element: HTMLElement, settings: ViewportSettings = {
         container = settings.container || window,
         threshold = settings.threshold || 0;
 
-    if (container === window) {
-        fold = window.innerWidth + window.scrollX;
+    if (container instanceof HTMLElement) {
+        fold = offset(container).left + container.offsetWidth;
     } else {
-        fold = offset(container).left + settings.container.offsetWidth;
+        fold = window.innerWidth + window.scrollX;
     }
 
     return fold <= offset(element).left - threshold;
@@ -67,10 +67,10 @@ export function belowTheFold(element: HTMLElement, settings: ViewportSettings = 
         container = settings.container || window,
         threshold = settings.threshold || 0;
 
-    if (container === window) {
-        fold = window.innerHeight + window.scrollY;
+    if (container instanceof HTMLElement) {
+        fold = offset(container).top + container.offsetHeight;
     } else {
-        fold = offset(container).top + settings.container.offsetHeight;
+        fold = window.innerHeight + window.scrollY;
     }
 
     return fold <= offset(element).top - threshold;
@@ -81,10 +81,10 @@ export function leftOfBegin(element: HTMLElement, settings: ViewportSettings = {
         container = settings.container || window,
         threshold = settings.threshold || 0;
 
-    if (container === window) {
-        fold = window.scrollX;
-    } else {
+    if (container instanceof HTMLElement) {
         fold = offset(container).left;
+    } else {
+        fold = window.scrollX;
     }
 
     return fold >= offset(element).left + threshold + element.offsetWidth;
