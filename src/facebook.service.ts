@@ -9,6 +9,8 @@ declare var window: Window;
 declare var FB: any;
 
 export interface FacebookDefaults {
+    appId?: string,
+    status?: boolean,
     xfbml?: boolean,
     version?: string,
 }
