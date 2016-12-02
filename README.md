@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
 
 ## Methods
 
-### init
+## init
 
 Load and initialize facebook sdk.
 
@@ -111,16 +111,10 @@ export class AppService {
       version: 'v2.7'
     }, 'ro_RO');
   }
-  
-  doSomethingAfterFacebookWasLoaded() {
-    this.facebook.init().then(() => {
-        alert('Facebook initialized!');
-    });
-  }
 }
 ```
 
-### parse
+## parse
 
 Parse Facebook plugins from a HTMLElement.
 
@@ -159,7 +153,7 @@ export class WidgetComponent implements OnInit {
 }
 ```
 
-### then
+## then
 
 Execute something after facebook successfully initialized.
 
@@ -167,7 +161,7 @@ Execute something after facebook successfully initialized.
 then(callable: () => {}): Promise
 ```
 
-### catch
+## catch
 
 Execute something if facebook couldn't be initialized.
 
