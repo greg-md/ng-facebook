@@ -206,9 +206,11 @@ _Example:_
 
 ### threshold
 
-By default images are loaded when they appear on the screen.
-If you want images to load earlier use threshold parameter.
+By default plugins are loaded when they appear on the screen.
+If you want plugins to load earlier, use threshold parameter.
 Setting threshold to 200 causes image to load 200 pixels before it appears on viewport.
+
+_Example:_
 
 ```html
 <img src="loading.jpg" gg-lazy-load="lazy-image.jpg" threshold="200" />
@@ -216,8 +218,10 @@ Setting threshold to 200 causes image to load 200 pixels before it appears on vi
 
 ### container
 
-You can also use directive for images inside scrolling container,
+You can also use directive for plugins inside scrolling container,
 such as div with scrollbar. Just pass the container element.
+
+_Example:_
 
 ```html
 <div #container>
