@@ -1,5 +1,7 @@
 # Facebook sdk for Angular2
 
+[![npm version](https://badge.fury.io/js/%40greg-md%2Fng-facebook.svg)](https://badge.fury.io/js/%40greg-md%2Fng-facebook)
+
 Using Facebook sdk with Angular2.
 
 # Features
