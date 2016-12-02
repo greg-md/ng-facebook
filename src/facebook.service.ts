@@ -24,7 +24,7 @@ export class FacebookService {
 
     script: HTMLScriptElement = null;
 
-    resolver: () => {} = null;
+    resolver: () => void = null;
 
     promise: Promise<any> = null;
 
@@ -60,11 +60,11 @@ export class FacebookService {
         });
     }
 
-    public then(callable: () => {}) {
+    public then(callable: () => void) {
         return this.promise.then(callable);
     }
 
-    public catch(callable: () => {}) {
+    public catch(callable: () => void) {
         return this.promise.catch(callable);
     }
 
@@ -74,7 +74,7 @@ export class FacebookService {
         });
     }
 
-    private loadScript(src: string, callback: () => {}) {
+    private loadScript(src: string, callback: () => void) {
         if (this.script) {
             delete window.FB;
 
