@@ -38,13 +38,7 @@ export class FacebookService {
         this.newPromise();
     }
 
-    newPromise() {
-        this.promise = new Promise(res => {
-            this.resolver = res;
-        });
-    }
-
-    init(params: FacebookDefaults = {}, lang: string = 'en_US') {
+    public init(params: FacebookDefaults = {}, lang: string = 'en_US') {
         if (!this.resolver) {
             this.newPromise();
         }
@@ -66,7 +60,19 @@ export class FacebookService {
         return this.promise;
     }
 
-    loadScript(src: string, callback: FacebookCallback) {
+    public parse(element: HTMLElement) {
+        this.promise.then(() => {
+            FB.XFBML.parse(element);
+        });
+    }
+
+    private newPromise() {
+        this.promise = new Promise(res => {
+            this.resolver = res;
+        });
+    }
+
+    private loadScript(src: string, callback: FacebookCallback) {
         if (this.script) {
             delete window.FB;
 
@@ -94,11 +100,5 @@ export class FacebookService {
         this.script.onload = callback;
 
         document.getElementsByTagName('head')[0].appendChild(this.script);
-    }
-
-    parse(element: HTMLElement) {
-        this.promise.then(() => {
-            FB.XFBML.parse(element);
-        });
     }
 }

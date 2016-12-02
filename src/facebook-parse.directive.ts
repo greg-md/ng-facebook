@@ -8,27 +8,35 @@ import { FacebookService } from './facebook.service';
   selector: '[gg-fb-parse]',
 })
 export class FacebookParseDirective implements OnInit, AfterViewInit {
+  @Input('lazy-load') lazyLoad: boolean = true;
+
   @Input() threshold: number = 0;
 
   @Input() container: HTMLElement | Window;
+
+  loaded = false;
 
   constructor(private elementRef: ElementRef, private fb: FacebookService) { }
 
   ngOnInit() { }
 
   ngAfterViewInit() {
-    this.lazyload();
+    this.check();
   }
 
-  @HostListener('window:scroll') @HostListener('window:resize') lazyload() {
-    if (inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
-      this.load();
+  @HostListener('window:scroll') @HostListener('window:resize') listener() {
+    if (this.loaded) {
+      return false;
     }
+
+    this.check();
   }
 
-  load() {
-    this.lazyload = () => {};
+  check() {
+    if (!this.lazyLoad || inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
+      this.fb.parse(this.elementRef.nativeElement);
 
-    this.fb.parse(this.elementRef.nativeElement);
+      this.loaded = true;
+    }
   }
 }

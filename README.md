@@ -1,6 +1,12 @@
-# ng-facebook
+# Facebook sdk for Angular2
 
-Facebook sdk for Angular2
+Using Facebook sdk with Angular2
+
+## Features
+
+1. Multi-Language initialization support;
+2. Lazy loading plugins when they appears in viewport;
+3. 
 
 ## Installation
 
@@ -8,20 +14,21 @@ Facebook sdk for Angular2
 npm install @greg-md/ng-facebook --save
 ```
 
-## Setting up in AppModule
+## Setting up in a module
 
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent } from './app.component';
-
-// Import your library
+// 1. Import Facebook module.
 import { FacebookModule } from '@greg-md/ng-facebook';
+
+import { AppComponent } from './app.component';
 
 @NgModule({
   imports: [
     BrowserModule,
+    // 2. Import Facebook module with providers.
     FacebookModule.forRoot()
   ],
   declarations: [AppComponent],
@@ -30,7 +37,7 @@ import { FacebookModule } from '@greg-md/ng-facebook';
 export class AppModule { }
 ```
 
-## Using in components
+## Using in components/views
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
@@ -54,6 +61,8 @@ export class AppComponent implements OnInit {
 }
 ```
 
+## Directives
+
 ## License
 
-MIT © [Grigorii Duca](contact@greg.md)
+MIT © [Grigorii Duca](http://greg.md)
