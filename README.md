@@ -183,9 +183,7 @@ then(callable: () => {}): Promise
 
 `callable` - Any callable function.
 
-# Directives
-
-## [gg-fb-parse]
+# Parse directive
 
 Parse Facebook plugins from current container.
 
@@ -201,6 +199,29 @@ _Example:_
     data-size="small"
     data-show-faces="true"
     data-share="true"></div>
+</div>
+```
+
+## Attributes
+
+### threshold
+
+By default images are loaded when they appear on the screen.
+If you want images to load earlier use threshold parameter.
+Setting threshold to 200 causes image to load 200 pixels before it appears on viewport.
+
+```html
+<img src="loading.jpg" gg-lazy-load="lazy-image.jpg" threshold="200" />
+```
+
+### container
+
+You can also use directive for images inside scrolling container,
+such as div with scrollbar. Just pass the container element.
+
+```html
+<div #container>
+    <img src="loading.jpg" gg-lazy-load="lazy-image.jpg" [container]="container" />
 </div>
 ```
 
