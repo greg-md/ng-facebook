@@ -4,7 +4,7 @@ Using Facebook sdk with Angular2
 
 # Features
 
-1. Multi-Language initialization support;
+1. Multi-Language initialization support with changing the language in real time;
 2. Lazy loading plugins when they appears in viewport;
 
 # Installation
