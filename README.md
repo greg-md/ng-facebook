@@ -84,14 +84,14 @@ export class AppComponent implements OnInit {
 
 Below is a list of supported methods of the [FacebookService](#facebookservice):
 
-* [init](#init) - Load and initialize facebook sdk;
+* [init](#init) - Load and initialize Facebook sdk;
 * [parse](#parse) - Parse Facebook plugins from a HTMLElement;
-* [then](#then) - Execute something after facebook successfully initialized;
-* [catch](#catch) - Execute something if facebook couldn't be initialized.
+* [then](#then) - Execute something after Facebook successfully initialized;
+* [catch](#catch) - Execute something if Facebook couldn't be initialized.
 
 ## init
 
-Load and initialize facebook sdk.
+Load and initialize Facebook sdk.
 
 ```typescript
 init(params: FacebookDefaults = {}, lang: string = 'en_US'): Promise
@@ -165,7 +165,7 @@ export class WidgetComponent implements OnInit {
 
 ## then
 
-Execute something after facebook successfully initialized.
+Execute something after Facebook successfully initialized.
 
 ```typescript
 then(callable: () => {}): Promise
@@ -175,7 +175,7 @@ then(callable: () => {}): Promise
 
 ## catch
 
-Execute something if facebook couldn't be initialized.
+Execute something if Facebook couldn't be initialized.
 
 ```typescript
 then(callable: () => {}): Promise
