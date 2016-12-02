@@ -1,4 +1,4 @@
-import {Directive, HostListener, OnInit, Input, ElementRef, AfterViewInit} from '@angular/core';
+import {Directive, OnInit, Input, ElementRef, AfterViewInit} from '@angular/core';
 
 import { inViewport } from './facebook.utils';
 
@@ -14,29 +14,35 @@ export class FacebookParseDirective implements OnInit, AfterViewInit {
 
   @Input() container: HTMLElement | Window;
 
-  loaded = false;
+  tryLoading = () => {
+    if (inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
+      this.load();
+
+      window.removeEventListener('scroll', this.tryLoading);
+      window.removeEventListener('resize', this.tryLoading);
+    }
+  };
 
   constructor(private elementRef: ElementRef, private fb: FacebookService) { }
 
   ngOnInit() { }
 
   ngAfterViewInit() {
-    this.check();
+    if (this.lazyLoad) {
+      this.initLazyLoad();
+    } else {
+      this.load();
+    }
   }
 
-  @HostListener('window:scroll') @HostListener('window:resize') listener() {
-    if (this.loaded) {
-      return false;
-    }
+  initLazyLoad() {
+    window.addEventListener('scroll', this.tryLoading);
+    window.addEventListener('resize', this.tryLoading);
 
-    this.check();
+    this.tryLoading();
   }
 
-  check() {
-    if (!this.lazyLoad || inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
-      this.fb.parse(this.elementRef.nativeElement);
-
-      this.loaded = true;
-    }
+  load() {
+    this.fb.parse(this.elementRef.nativeElement);
   }
 }

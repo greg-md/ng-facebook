@@ -15,14 +15,6 @@ export interface FacebookDefaults {
     version?: string,
 }
 
-export interface FacebookResolver {
-    (): void
-}
-
-export interface FacebookCallback {
-    (): void
-}
-
 @Injectable()
 export class FacebookService {
     defaults: FacebookDefaults = {
@@ -32,7 +24,7 @@ export class FacebookService {
 
     script: HTMLScriptElement = null;
 
-    resolver: FacebookResolver = null;
+    resolver: () => {} = null;
 
     promise: Promise<any> = null;
 
@@ -82,7 +74,7 @@ export class FacebookService {
         });
     }
 
-    private loadScript(src: string, callback: FacebookCallback) {
+    private loadScript(src: string, callback: () => {}) {
         if (this.script) {
             delete window.FB;
 
