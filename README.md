@@ -79,6 +79,13 @@ export class AppComponent implements OnInit {
 
 ## Methods
 
+Below is a list of supported methods of the `FacebookService`:
+
+* [init](#init) - Load and initialize facebook sdk;
+* [parse](#parse) - Parse Facebook plugins from a HTMLElement;
+* [then](#then) - Execute something after facebook successfully initialized;
+* [catch](#catch) - Execute something if facebook couldn't be initialized.
+
 ## init
 
 Load and initialize facebook sdk.
