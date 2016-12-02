@@ -206,4 +206,4 @@ _Example:_
 
 # License
 
-MIT © <a href="http://greg.md" target="_blank">Grigorii Duca</a>
+MIT © [Grigorii Duca](http://greg.md)
