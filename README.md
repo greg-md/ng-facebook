@@ -45,8 +45,18 @@ import { FacebookService } from '@greg-md/ng-facebook';
 @Component({
   selector: 'app-root',
   template: `
+    <a tabindex="0" (click)="changeLanguage('en_EN')">English</a>
+    |
+    <a tabindex="0" (click)="changeLanguage('ro_RO')">Romanian</a>
+    
     <div gg-fb-parse>
-      <div class="fb-like" data-href="http://greg.md" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+      <div class="fb-like"
+        data-href="http://greg.md"
+        data-layout="standard"
+        data-action="like"
+        data-size="small"
+        data-show-faces="true"
+        data-share="true"></div>
     </div>
   `,
 })
@@ -55,6 +65,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.facebook.init();
+  }
+  
+  changeLanguage(newLanguage) {
+    this.facebook.init({}, newLanguage);
   }
 }
 ```
