@@ -1,6 +1,6 @@
 {
   "name": "@greg-md/ng-facebook",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Facebook sdk for Angular2",
   "scripts": {
     "prepublish": "tsc",

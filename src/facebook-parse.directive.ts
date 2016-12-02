@@ -14,18 +14,12 @@ export class FacebookParseDirective implements OnInit, AfterViewInit {
 
   @Input() container: HTMLElement | Window;
 
-  tryLoading = () => {
-    if (inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
-      this.load();
-
-      window.removeEventListener('scroll', this.tryLoading);
-      window.removeEventListener('resize', this.tryLoading);
-    }
-  };
-
   constructor(private elementRef: ElementRef, private fb: FacebookService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    // Int fix.
+    this.threshold = parseInt(this.threshold + '');
+  }
 
   ngAfterViewInit() {
     if (this.lazyLoad) {
@@ -34,6 +28,15 @@ export class FacebookParseDirective implements OnInit, AfterViewInit {
       this.load();
     }
   }
+
+  tryLoading = () => {
+    if (inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
+      this.load();
+
+      window.removeEventListener('scroll', this.tryLoading);
+      window.removeEventListener('resize', this.tryLoading);
+    }
+  };
 
   initLazyLoad() {
     window.addEventListener('scroll', this.tryLoading);
