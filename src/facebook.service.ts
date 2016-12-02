@@ -63,9 +63,17 @@ export class FacebookService {
     }
 
     public parse(element: HTMLElement) {
-        this.promise.then(() => {
+        return this.promise.then(() => {
             FB.XFBML.parse(element);
         });
+    }
+
+    public then(callable: () => {}) {
+        return this.promise.then(callable);
+    }
+
+    public catch(callable: () => {}) {
+        return this.promise.catch(callable);
     }
 
     private newPromise() {

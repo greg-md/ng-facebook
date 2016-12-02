@@ -1,11 +1,11 @@
 # Facebook sdk for Angular2
 
-Using Facebook sdk with Angular2
+Using Facebook sdk with Angular2.
 
 # Features
 
 1. Multi-Language initialization support with changing the language in real time;
-2. Lazy loading plugins when they appears in viewport;
+2. Lazy loading plugins when they appears in viewport.
 
 # Installation
 
@@ -40,7 +40,6 @@ export class AppModule { }
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
-
 import { FacebookService } from '@greg-md/ng-facebook';
 
 @Component({
@@ -60,17 +59,15 @@ export class AppComponent implements OnInit {
 }
 ```
 
-# Services
-
-## FacebookService
+# FacebookService
 
 `FacebookService` works directly with Facebook sdk.
 
-### Methods
+## Methods
 
-#### init
+### init
 
-Parse Facebook plugins from an HTMLElement.
+Load and initialize facebook sdk.
 
 ```typescript
 init(params: FacebookDefaults = {}, lang: string = 'en_US'): Promise
@@ -109,46 +106,59 @@ export class AppService {
 }
 ```
 
-#### parse
+### parse
 
-Parse
+Parse Facebook plugins from a HTMLElement.
 
 ```typescript
-export interface FacebookDefaults {
-    appId?: string,
-    status?: boolean,
-    xfbml?: boolean,
-    version?: string,
-}
-
-init(params: FacebookDefaults = {}, lang: string = 'en_US')
+parse(element: HTMLElement): Promise
 ```
 
-`params` - The same as [FB.init(params)](https://developers.facebook.com/docs/javascript/reference/FB.init/v2.8) parameters;  
-`lang` - Facebook sdk language. See [Localization & Translation](https://developers.facebook.com/docs/internationalization).
+`element` - An HTMLElement;  
 
 _Example:_
 
 ```typescript
-import { Injectable } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 
 import { FacebookService } from '@greg-md/ng-facebook';
 
-@Injectable()
-export class AppService {
-  constructor(public facebook: FacebookService) { }
+@Component({
+  selector: 'facebook-page',
+  template: `
+    <h2>We on Facebook!</h2>
+    
+    <div class="fb-page" 
+      data-href="https://www.facebook.com/facebook"
+      data-width="380" 
+      data-hide-cover="false"
+      data-show-facepile="false" 
+      data-show-posts="false"></div>
+  `,
+})
+export class WidgetComponent implements OnInit {
+  constructor(private: elementRef: ElementRef, private facebook: FacebookService) { }
 
-  loadAndInitFacebook() {
-    this.facebook.init();
-  }
-  
-  changeFacebookSettings() {
-    this.facebook.init({
-      appId : '{your-app-id}',
-      version: 'v2.7'
-    }, 'ro_RO');
+  ngOnInit() {
+    this.facebook.parse(this.elementRef.nativeElement);
   }
 }
+```
+
+### then
+
+Execute something after facebook successfully initialized.
+
+```typescript
+then(callable: () => {}): Promise
+```
+
+### catch
+
+Execute something if facebook couldn't be initialized.
+
+```typescript
+then(callable: () => {}): Promise
 ```
 
 # Directives
