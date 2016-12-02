@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
 
 ## Methods
 
-Below is a list of supported methods of the `FacebookService`:
+Below is a list of supported methods of the [FacebookService](#facebookservice):
 
 * [init](#init) - Load and initialize facebook sdk;
 * [parse](#parse) - Parse Facebook plugins from a HTMLElement;
@@ -129,7 +129,7 @@ Parse Facebook plugins from a HTMLElement.
 parse(element: HTMLElement): Promise
 ```
 
-`element` - An HTMLElement;  
+`element` - An HTMLElement.
 
 _Example:_
 
@@ -168,6 +168,8 @@ Execute something after facebook successfully initialized.
 then(callable: () => {}): Promise
 ```
 
+`callable` - Any callable function.
+
 ## catch
 
 Execute something if facebook couldn't be initialized.
@@ -175,6 +177,8 @@ Execute something if facebook couldn't be initialized.
 ```typescript
 then(callable: () => {}): Promise
 ```
+
+`callable` - Any callable function.
 
 # Directives
 
@@ -187,7 +191,13 @@ _Example:_
 
 ```html
 <div gg-fb-parse>
-  <div class="fb-like" data-href="http://greg.md" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+  <div class="fb-like"
+    data-href="http://greg.md"
+    data-layout="standard"
+    data-action="like"
+    data-size="small"
+    data-show-faces="true"
+    data-share="true"></div>
 </div>
 ```
 
