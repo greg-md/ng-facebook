@@ -8,7 +8,7 @@ import { FacebookService } from './facebook.service';
   selector: '[gg-fb-parse]',
 })
 export class FacebookParseDirective implements OnInit, AfterViewInit {
-  @Input('lazy-load') lazyLoad: boolean = true;
+  @Input() lazyLoad: boolean = true;
 
   @Input() threshold: number = 0;
 
