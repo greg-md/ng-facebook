@@ -15,6 +15,13 @@ export interface FacebookDefaults {
     version?: string,
 }
 
+export interface FacebookLoginResponse {
+    status: string,
+    authResponse: {
+        accessToken: string,
+    },
+}
+
 @Injectable()
 export class FacebookService {
     defaults: FacebookDefaults = {
