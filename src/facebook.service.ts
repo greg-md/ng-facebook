@@ -10,6 +10,8 @@ interface Facebook {
     XFBML: {
         parse: (HTMLElement) => void;
     };
+
+    init: (FacebookDefaults) => void;
 }
 
 declare const FB: Facebook;
@@ -37,9 +39,13 @@ export class FacebookService {
 
     private script: HTMLScriptElement = null;
 
+    private _promise: Promise<any> = null;
+
     private resolver: () => void = null;
 
-    private _promise: Promise<any> = null;
+    private _tmpPromise: Promise<any> = null;
+
+    private tmpResolver: (() => void) | boolean = null;
 
     public init(params: FacebookDefaults = {}, lang: string = 'en_US') {
         params = Object.assign({}, this.defaults, params);
@@ -49,11 +55,7 @@ export class FacebookService {
 
             this.reloadRendered();
 
-            if (!this.resolver) {
-                this.newPromise();
-            }
-
-            this.resolver();
+            this.resolve();
         });
 
         return this;
@@ -63,9 +65,9 @@ export class FacebookService {
         return FB;
     }
 
-    public parse(element: HTMLElement) {
+    parse(element: HTMLElement) {
         if (element) {
-            this.promise.then(() => {
+            this.tmpPromise = this.tmpPromise.then(() => {
                 this.sdk.XFBML.parse(element);
             });
         }
@@ -73,7 +75,7 @@ export class FacebookService {
         return this;
     }
 
-    public then(callable: () => void) {
+    then(callable: () => void) {
         this.promise = this.promise.then(() => {
             callable();
         });
@@ -81,12 +83,33 @@ export class FacebookService {
         return this;
     }
 
-    public catch(callable: () => void) {
+    catch(callable: () => void) {
         this.promise = this.promise.catch(() => {
             callable();
         });
 
         return this;
+    }
+
+    private resolve() {
+        if (!this.resolver) {
+            this.newPromise();
+        }
+
+        this.resolver();
+
+        // Tmp resolver
+        if (this.tmpResolver === null) {
+            this.newTmpPromise();
+        }
+
+        if (this.tmpResolver && (typeof this.tmpResolver !== 'boolean')) {
+            this.tmpResolver();
+
+            this.tmpResolver = true;
+
+            this.tmpPromise = Promise.resolve(true);
+        }
     }
 
     private get promise() {
@@ -104,6 +127,26 @@ export class FacebookService {
     private newPromise() {
         this.promise = new Promise(res => {
             this.resolver = res;
+        });
+
+        return this;
+    }
+
+    private get tmpPromise() {
+        if (!this._tmpPromise) {
+            this.newTmpPromise();
+        }
+
+        return this._tmpPromise;
+    }
+
+    private set tmpPromise(promise: Promise<any>) {
+        this._tmpPromise = promise;
+    }
+
+    private newTmpPromise() {
+        this.tmpPromise = new Promise(res => {
+            this.tmpResolver = res;
         });
 
         return this;
