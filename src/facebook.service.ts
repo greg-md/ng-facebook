@@ -6,7 +6,7 @@ interface Window {
 
 declare const window: Window;
 
-interface Facebook {
+export interface Facebook {
     XFBML: {
         parse: (HTMLElement) => void;
     };
