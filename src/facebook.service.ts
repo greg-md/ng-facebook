@@ -4,9 +4,15 @@ interface Window {
     FB: any;
 }
 
-declare var window: Window;
+declare const window: Window;
 
-declare var FB: any;
+interface Facebook {
+    XFBML: {
+        parse: (HTMLElement) => void;
+    };
+}
+
+declare const FB: Facebook;
 
 export interface FacebookDefaults {
     appId?: string,
@@ -24,64 +30,90 @@ export interface FacebookLoginResponse {
 
 @Injectable()
 export class FacebookService {
-    defaults: FacebookDefaults = {
+    private defaults: FacebookDefaults = {
         xfbml: false,
         version: 'v2.8'
     };
 
-    script: HTMLScriptElement = null;
+    private script: HTMLScriptElement = null;
 
-    resolver: () => void = null;
+    private resolver: () => void = null;
 
-    promise: Promise<any> = null;
-
-    constructor() {
-        this.newPromise();
-    }
+    private _promise: Promise<any> = null;
 
     public init(params: FacebookDefaults = {}, lang: string = 'en_US') {
-        if (!this.resolver) {
-            this.newPromise();
-        }
-
         params = Object.assign({}, this.defaults, params);
 
         this.loadScript('//connect.facebook.net/' + (lang || 'en_US') + '/sdk.js', () => {
-            FB.init(params);
+            this.sdk.init(params);
 
-            Array.from(document.querySelectorAll('[fb-xfbml-state="rendered"]')).forEach(node => {
-                FB.XFBML.parse(node.parentNode);
-            });
+            this.reloadRendered();
+
+            if (!this.resolver) {
+                this.newPromise();
+            }
 
             this.resolver();
-
-            this.resolver = null;
         });
 
-        return this.promise;
+        return this;
+    }
+
+    get sdk(): Facebook {
+        return FB;
     }
 
     public parse(element: HTMLElement) {
-        return this.promise.then(() => {
-            FB.XFBML.parse(element);
-        });
+        if (element) {
+            this.promise.then(() => {
+                this.sdk.XFBML.parse(element);
+            });
+        }
+
+        return this;
     }
 
     public then(callable: () => void) {
-        return this.promise.then(callable);
+        this.promise = this.promise.then(() => {
+            callable();
+        });
+
+        return this;
     }
 
     public catch(callable: () => void) {
-        return this.promise.catch(callable);
+        this.promise = this.promise.catch(() => {
+            callable();
+        });
+
+        return this;
+    }
+
+    private get promise() {
+        if (!this._promise) {
+            this.newPromise();
+        }
+
+        return this._promise;
+    }
+
+    private set promise(promise: Promise<any>) {
+        this._promise = promise;
     }
 
     private newPromise() {
         this.promise = new Promise(res => {
             this.resolver = res;
         });
+
+        return this;
     }
 
     private loadScript(src: string, callback: () => void) {
+        if (!window) {
+            return this;
+        }
+
         if (this.script) {
             delete window.FB;
 
@@ -109,5 +141,15 @@ export class FacebookService {
         this.script.onload = callback;
 
         document.getElementsByTagName('head')[0].appendChild(this.script);
+
+        return this;
+    }
+
+    private reloadRendered() {
+        if (document) {
+            Array.from(document.querySelectorAll('[fb-xfbml-state="rendered"]')).forEach(node => {
+                this.sdk.XFBML.parse(node.parentNode);
+            });
+        }
     }
 }

@@ -14,7 +14,7 @@ export class FacebookParseDirective implements OnInit, AfterViewInit {
 
   @Input() container: HTMLElement | Window;
 
-  constructor(private elementRef: ElementRef, private fb: FacebookService) { }
+  constructor(private elementRef: ElementRef, private facebook: FacebookService) { }
 
   ngOnInit() {
     // Int fix.
@@ -29,6 +29,19 @@ export class FacebookParseDirective implements OnInit, AfterViewInit {
     }
   }
 
+  initLazyLoad() {
+    if (window) {
+      window.addEventListener('scroll', this.tryLoading);
+      window.addEventListener('resize', this.tryLoading);
+
+      this.tryLoading();
+    }
+  }
+
+  load() {
+    this.facebook.parse(this.elementRef.nativeElement);
+  }
+
   tryLoading = () => {
     if (inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
       this.load();
@@ -37,15 +50,4 @@ export class FacebookParseDirective implements OnInit, AfterViewInit {
       window.removeEventListener('resize', this.tryLoading);
     }
   };
-
-  initLazyLoad() {
-    window.addEventListener('scroll', this.tryLoading);
-    window.addEventListener('resize', this.tryLoading);
-
-    this.tryLoading();
-  }
-
-  load() {
-    this.fb.parse(this.elementRef.nativeElement);
-  }
 }
