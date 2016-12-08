@@ -8,10 +8,10 @@ declare const window: Window;
 
 export interface Facebook {
     XFBML: {
-        parse: (HTMLElement) => void;
+        parse: (element: Node) => void;
     };
 
-    init: (FacebookDefaults) => void;
+    init: (params: FacebookDefaults) => void;
 }
 
 declare const FB: Facebook;

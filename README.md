@@ -22,7 +22,7 @@ npm install @greg-md/ng-facebook --save
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-// 1. Import Facebook module.
+// 1. Import Facebook module;
 import { FacebookModule } from '@greg-md/ng-facebook';
 
 import { AppComponent } from './app.component';

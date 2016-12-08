@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+
 import {FacebookParseDirective} from './facebook-parse.directive';
 
 @NgModule({
