@@ -5,6 +5,15 @@
 
 Using Facebook sdk with Angular2.
 
+# Table of contents:
+
+* [Features](#features)
+* [Installation](#installation)
+* [How It Works](#how-it-works)
+* [Facebook Service](#facebook-service)
+* [License](#license)
+* [Huuuge Quote](#huuuge-quote)
+
 # Features
 
 1. Multi-Language initialization support with changing languages in real time;
@@ -16,7 +25,9 @@ Using Facebook sdk with Angular2.
 npm install @greg-md/ng-facebook --save
 ```
 
-# Setting up in a module
+# How It Works
+
+## Setting up in a module
 
 ```typescript
 import { BrowserModule } from '@angular/platform-browser';
@@ -39,7 +50,7 @@ import { AppComponent } from './app.component';
 export class AppModule { }
 ```
 
-# Using in components/views
+## Using in components/views
 
 ```typescript
 import { Component, OnInit } from '@angular/core';
@@ -76,13 +87,13 @@ export class AppComponent implements OnInit {
 }
 ```
 
-# FacebookService
+# Facebook Service
 
 `FacebookService` works directly with Facebook sdk.
 
 ## Methods
 
-Below is a list of supported methods of the [FacebookService](#facebookservice):
+Below is a list of **supported methods**:
 
 * [init](#init) - Load and initialize Facebook sdk;
 * [parse](#parse) - Parse Facebook plugins from a HTMLElement;
@@ -232,3 +243,7 @@ _Example:_
 # License
 
 MIT © [Grigorii Duca](http://greg.md)
+
+# Huuuge Quote
+
+![I fear not the man who has practiced 10,000 programming languages once, but I fear the man who has practiced one programming language 10,000 times. #horrorsquad](http://greg.md/huuuge-quote-fb.jpg)
