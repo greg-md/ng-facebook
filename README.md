@@ -5,7 +5,7 @@
 
 Using Facebook sdk with Angular2.
 
-# Table of contents:
+# Table of Contents:
 
 * [Features](#features)
 * [Installation](#installation)
