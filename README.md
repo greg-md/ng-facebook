@@ -238,7 +238,7 @@ _Example:_
 ### container
 
 You can also use directive for plugins inside scrolling container,
-such as div with scrollbar. Just pass the container element.
+such as div with scroll bar. Just pass the container element.
 
 _Example:_
 
