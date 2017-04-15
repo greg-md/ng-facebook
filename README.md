@@ -224,7 +224,15 @@ Setting threshold to 200 causes image to load 200 pixels before it appears on vi
 _Example:_
 
 ```html
-<img src="loading.jpg" gg-lazy-load="lazy-image.jpg" threshold="200" />
+<div gg-fb-parse threshold="200">
+  <div class="fb-like"
+    data-href="http://greg.md"
+    data-layout="standard"
+    data-action="like"
+    data-size="small"
+    data-show-faces="true"
+    data-share="true"></div>
+</div>
 ```
 
 ### container
@@ -236,7 +244,15 @@ _Example:_
 
 ```html
 <div #container>
-    <img src="loading.jpg" gg-lazy-load="lazy-image.jpg" [container]="container" />
+    <div gg-fb-parse threshold="200" [container]="container">
+      <div class="fb-like"
+        data-href="http://greg.md"
+        data-layout="standard"
+        data-action="like"
+        data-size="small"
+        data-show-faces="true"
+        data-share="true"></div>
+    </div>
 </div>
 ```
 
