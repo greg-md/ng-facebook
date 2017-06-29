@@ -1,7 +1,7 @@
 {
   "name": "@greg-md/ng-facebook",
   "version": "1.0.11",
-  "description": "Facebook sdk for Angular2",
+  "description": "Using Facebook SDK with Angular.",
   "repository": {
     "type": "git",
     "url": "https://github.com/greg-md/ng-facebook"
@@ -24,7 +24,6 @@
     "js",
     "ts",
     "angular",
-    "angular2",
     "javascript",
     "typescript"
   ],
