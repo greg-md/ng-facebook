@@ -1,8 +1,8 @@
-import {NgModule} from '@angular/core';
+import {NgModule, ModuleWithProviders} from '@angular/core';
 
 import {FacebookParseDirective} from './facebook-parse.directive';
 
-import { FacebookService } from './facebook.service';
+import {FacebookService} from './facebook.service';
 
 @NgModule({
     declarations: [
@@ -15,4 +15,13 @@ import { FacebookService } from './facebook.service';
         FacebookService,
     ],
 })
-export class FacebookModule { }
+export class FacebookModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: FacebookModule,
+            providers: [
+                FacebookService,
+            ]
+        };
+    }
+}

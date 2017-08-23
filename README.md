@@ -42,7 +42,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     // 2. Register Facebook module with it's providers.
-    FacebookModule
+    FacebookModule.forRoot(),
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]

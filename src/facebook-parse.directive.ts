@@ -1,8 +1,8 @@
 import {Directive, OnInit, Input, ElementRef, AfterViewInit} from '@angular/core';
 
-import { inViewport } from './facebook.utils';
+import {inViewport} from './facebook.utils';
 
-import { FacebookService } from './facebook.service';
+import {FacebookService} from './facebook.service';
 
 @Directive({
   selector: '[gg-fb-parse]',
