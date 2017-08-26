@@ -34,7 +34,9 @@ export class FacebookParseDirective implements OnInit, AfterViewInit {
       window.addEventListener('scroll', this.tryLoading);
       window.addEventListener('resize', this.tryLoading);
 
-      this.tryLoading();
+      setTimeout(() => {
+        this.tryLoading();
+      });
     }
   }
 

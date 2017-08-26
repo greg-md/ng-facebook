@@ -11,9 +11,6 @@ import {FacebookService} from './facebook.service';
     exports: [
         FacebookParseDirective,
     ],
-    providers: [
-        FacebookService,
-    ],
 })
 export class FacebookModule {
     static forRoot(): ModuleWithProviders {
