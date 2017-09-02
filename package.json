@@ -1,6 +1,6 @@
 {
   "name": "@greg-md/ng-facebook",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Using Facebook SDK with Angular.",
   "repository": {
     "type": "git",
