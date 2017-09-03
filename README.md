@@ -97,6 +97,18 @@ export class AppComponent implements OnInit {
 
 # Components
 
+All components have next attributes:
+
+#### lazy-load
+
+By default plugins are loaded when Facebook SDK is initialized.
+If you want plugins to be lazy loaded, use `lazy-load` attribute.
+Setting `lazy-load` to `200` causes image to load 200 pixels before it appears on viewport.
+
+#### container
+
+You can use also use `lazy-load` attribute inside a scrolling container, such as div with scroll bar.
+
 ## fb-page
 
 Page Plugin.
@@ -164,21 +176,11 @@ Try to fit inside the container width.
 
 Default `true`.
 
-#### threshold
-
-By default plugins are loaded when they appear on the screen.
-If you want plugins to load earlier, use threshold parameter.
-Setting threshold to `200` causes image to load 200 pixels before it appears on viewport.
-
-#### container
-
-You can use also use `threshold` attribute inside a scrolling container, such as div with scroll bar.
-
 _Example:_
 
 ```html
 <div #container>
-  <fb-page href="https://www.facebook.com/facebook" threshold="200" [container]="container"></fb-page>
+  <fb-page href="https://www.facebook.com/facebook" lazy-load="200" [container]="container"></fb-page>
 </div>
 ```
 
@@ -267,6 +269,18 @@ Please see [Layout Settings](#layout-settings) for more details.
 
 # Directives
 
+All directives have next attributes:
+
+#### lazy-load
+
+By default plugins are loaded when Facebook SDK is initialized.
+If you want plugins to be lazy loaded, use `lazy-load` attribute.
+Setting `lazy-load` to `200` causes image to load 200 pixels before it appears on viewport.
+
+#### container
+
+You can use also use `lazy-load` attribute inside a scrolling container, such as div with scroll bar.
+
 ## fb-parse
 
 Parse Facebook plugins from current container.
@@ -282,49 +296,6 @@ _Example:_
     data-size="small"
     data-show-faces="true"
     data-share="true"></div>
-</div>
-```
-
-### Attributes
-
-#### threshold
-
-By default plugins are loaded when they appear on the screen.
-If you want plugins to load earlier, use threshold parameter.
-Setting threshold to 200 causes image to load 200 pixels before it appears on viewport.
-
-_Example:_
-
-```html
-<div fb-parse threshold="200">
-  <div class="fb-like"
-    data-href="http://greg.md"
-    data-layout="standard"
-    data-action="like"
-    data-size="small"
-    data-show-faces="true"
-    data-share="true"></div>
-</div>
-```
-
-#### container
-
-You can also use directive for plugins inside scrolling container,
-such as div with scroll bar. Just pass the container element.
-
-_Example:_
-
-```html
-<div #container>
-    <div fb-parse threshold="200" [container]="container">
-      <div class="fb-like"
-        data-href="http://greg.md"
-        data-layout="standard"
-        data-action="like"
-        data-size="small"
-        data-show-faces="true"
-        data-share="true"></div>
-    </div>
 </div>
 ```
 

@@ -2,7 +2,7 @@ import {Component, Input, ElementRef, Renderer2, Inject, Optional} from '@angula
 
 import {FacebookService} from './facebook.service';
 
-import {FacebookParseDirective, FB_PARSE_THRESHOLD} from './parse.directive';
+import {FacebookParseDirective, FB_PARSE_LAZY_LOAD} from './parse.directive';
 
 @Component({
   selector: 'fb-like',
@@ -38,7 +38,7 @@ export class FacebookLikeComponent extends FacebookParseDirective {
     elementRef: ElementRef,
     facebook: FacebookService,
     renderer: Renderer2,
-    @Optional() @Inject(FB_PARSE_THRESHOLD) thresold: number
+    @Optional() @Inject(FB_PARSE_LAZY_LOAD) thresold: number
   ) {
     super(elementRef, facebook, renderer, thresold);
   }

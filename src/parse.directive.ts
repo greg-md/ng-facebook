@@ -4,7 +4,7 @@ import {inViewport} from './facebook.utils';
 
 import {FacebookService} from './facebook.service';
 
-export const FB_PARSE_THRESHOLD = new InjectionToken<string>('fb_parse_threshold');
+export const FB_PARSE_LAZY_LOAD = new InjectionToken<string>('fb_parse_lazy_load');
 
 @Directive({
   selector: '[fb-parse]',
@@ -12,7 +12,7 @@ export const FB_PARSE_THRESHOLD = new InjectionToken<string>('fb_parse_threshold
 export class FacebookParseDirective implements AfterViewInit {
   private _threshold: number;
 
-  @Input() set threshold(threshold: number) {
+  @Input('lazy-load') set threshold(threshold: number) {
     if (threshold === null || (typeof threshold === 'string' && threshold === '')) {
       this._threshold = null;
     } else {
@@ -33,7 +33,7 @@ export class FacebookParseDirective implements AfterViewInit {
     private elementRef: ElementRef,
     private facebook: FacebookService,
     private renderer: Renderer2,
-    @Optional() @Inject(FB_PARSE_THRESHOLD) thresold: number
+    @Optional() @Inject(FB_PARSE_LAZY_LOAD) thresold: number
   ) {
     this.threshold = thresold;
   }
