@@ -1,18 +1,28 @@
-import {Directive, Input, ElementRef, AfterViewInit, Renderer2} from '@angular/core';
+import {Directive, Input, ElementRef, AfterViewInit, Renderer2, InjectionToken, Inject, Optional} from '@angular/core';
 
 import {inViewport} from './facebook.utils';
 
 import {FacebookService} from './facebook.service';
 
+export const FB_PARSE_THRESHOLD = new InjectionToken<string>('fb_parse_threshold');
+
 @Directive({
   selector: '[fb-parse]',
 })
 export class FacebookParseDirective implements AfterViewInit {
-  private _threshold: number = 0;
+  private _threshold: number;
 
-  @Input() set threshold(threshold: number) { this._threshold = parseInt(threshold + ''); }
+  @Input() set threshold(threshold: number) {
+    if (threshold === null || (typeof threshold === 'string' && threshold === '')) {
+      this._threshold = null;
+    } else {
+      this._threshold = parseInt(threshold + '');
+    }
+  }
 
-  get threshold(): number { return this._threshold; }
+  get threshold(): number {
+    return this._threshold;
+  }
 
   @Input() container: HTMLElement | Window;
 
@@ -23,13 +33,16 @@ export class FacebookParseDirective implements AfterViewInit {
     private elementRef: ElementRef,
     private facebook: FacebookService,
     private renderer: Renderer2,
-  ) { }
+    @Optional() @Inject(FB_PARSE_THRESHOLD) thresold: number
+  ) {
+    this.threshold = thresold;
+  }
 
   ngAfterViewInit() {
-    if (typeof this.threshold !== 'undefined') {
-      this.lazyLoad();
-    } else {
+    if (this.threshold === null) {
       this.load();
+    } else {
+      this.lazyLoad();
     }
   }
 

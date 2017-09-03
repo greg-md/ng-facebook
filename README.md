@@ -41,8 +41,11 @@ import { AppComponent } from './app.component';
 @NgModule({
   imports: [
     BrowserModule,
-    // 2. Register Facebook module with it's providers.
+    // 2. Register Facebook providers in root module;
     FacebookModule.forRoot(),
+    
+    // 3. Import Facebook components for a specific module.
+    FacebookModule,
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
@@ -63,7 +66,7 @@ import { FacebookService } from '@greg-md/ng-facebook';
     |
     <a tabindex="0" (click)="changeLanguage('ro_RO')">Romanian</a>
     
-    <div gg-fb-parse>
+    <div fb-parse>
       <div class="fb-like"
         data-href="http://greg.md"
         data-layout="standard"
@@ -86,6 +89,31 @@ export class AppComponent implements OnInit {
   }
 }
 ```
+
+# Components
+
+## fb-page
+
+Facebook Page Plugin.
+
+```html
+<fb-page href="https://www.facebook.com/facebook">Facebook</fb-page>
+```
+
+**Attributes:**
+
+* `href` - The URL of the Facebook Page;
+* `width` - The pixel width of the plugin. Min. is `180` & Max. is `500`. Default: `340`;
+* `height` - The pixel height of the plugin. Min. is `70`. Default: `500`;
+* `tabs` - Tabs to render i.e. `timeline`, `events`, `messages`.
+            Use a comma-separated list to add multiple tabs, i.e. `timeline, events`. Default: `timeline`;
+* `hide-cover` - Hide cover photo in the header. Default `false`;
+* `show-facepile` - Show profile photos when friends like this. Default `true`;
+* `hide-cta` - Hide the custom call to action button (if available). Default `false`;
+* `small-header` - Use the small header instead. Default `false`;
+* `adapt-container-width` - Try to fit inside the container width. Default `true`;
+
+# Directives
 
 # Facebook Service
 

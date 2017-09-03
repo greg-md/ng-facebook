@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, InjectionToken} from '@angular/core';
 
 declare const window: {
   FB: any;
