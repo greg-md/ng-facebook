@@ -109,6 +109,14 @@ Setting `lazy-load` to `200` causes image to load 200 pixels before it appears o
 
 You can use also use `lazy-load` attribute inside a scrolling container, such as div with scroll bar.
 
+_Example:_
+
+```html
+<div #container>
+  <fb-page href="https://www.facebook.com/facebook" lazy-load="200" [container]="container"></fb-page>
+</div>
+```
+
 ## fb-page
 
 Page Plugin.
@@ -175,14 +183,6 @@ Default `false`.
 Try to fit inside the container width.
 
 Default `true`.
-
-_Example:_
-
-```html
-<div #container>
-  <fb-page href="https://www.facebook.com/facebook" lazy-load="200" [container]="container"></fb-page>
-</div>
-```
 
 ## fb-like
 
@@ -280,6 +280,22 @@ Setting `lazy-load` to `200` causes image to load 200 pixels before it appears o
 #### container
 
 You can use also use `lazy-load` attribute inside a scrolling container, such as div with scroll bar.
+
+_Example:_
+
+```html
+<div #container>
+    <div fb-parse lazy-load="200" [container]="container">
+      <div class="fb-like"
+        data-href="http://greg.md"
+        data-layout="standard"
+        data-action="like"
+        data-size="small"
+        data-show-faces="true"
+        data-share="true"></div>
+    </div>
+</div>
+```
 
 ## fb-parse
 
