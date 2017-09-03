@@ -96,6 +96,8 @@ export class AppComponent implements OnInit {
 
 Facebook Page Plugin.
 
+_Example:_
+
 ```html
 <fb-page href="https://www.facebook.com/facebook">Facebook</fb-page>
 ```
@@ -115,6 +117,67 @@ Facebook Page Plugin.
 
 # Directives
 
+## fb-parse
+
+Parse Facebook plugins from current container.
+
+_Example:_
+
+```html
+<div fb-parse>
+  <div class="fb-like"
+    data-href="http://greg.md"
+    data-layout="standard"
+    data-action="like"
+    data-size="small"
+    data-show-faces="true"
+    data-share="true"></div>
+</div>
+```
+
+### Attributes
+
+#### threshold
+
+By default plugins are loaded when they appear on the screen.
+If you want plugins to load earlier, use threshold parameter.
+Setting threshold to 200 causes image to load 200 pixels before it appears on viewport.
+
+_Example:_
+
+```html
+<div gg-fb-parse threshold="200">
+  <div class="fb-like"
+    data-href="http://greg.md"
+    data-layout="standard"
+    data-action="like"
+    data-size="small"
+    data-show-faces="true"
+    data-share="true"></div>
+</div>
+```
+
+#### container
+
+You can also use directive for plugins inside scrolling container,
+such as div with scroll bar. Just pass the container element.
+
+_Example:_
+
+```html
+<div #container>
+    <div gg-fb-parse threshold="200" [container]="container">
+      <div class="fb-like"
+        data-href="http://greg.md"
+        data-layout="standard"
+        data-action="like"
+        data-size="small"
+        data-show-faces="true"
+        data-share="true"></div>
+    </div>
+</div>
+```
+
 # Facebook Service
 
 `FacebookService` works directly with Facebook sdk.
@@ -125,8 +188,6 @@ Below is a list of **supported methods**:
 
 * [init](#init) - Load and initialize Facebook sdk;
 * [parse](#parse) - Parse Facebook plugins from a HTMLElement;
-* [then](#then) - Execute something after Facebook successfully initialized;
-* [catch](#catch) - Execute something if Facebook couldn't be initialized.
 
 ## init
 
@@ -200,88 +261,6 @@ export class WidgetComponent implements OnInit {
     this.facebook.parse(this.elementRef.nativeElement);
   }
 }
-```
-
-## then
-
-Execute something after Facebook successfully initialized.
-
-```typescript
-then(callable: () => {}): Promise
-```
-
-`callable` - Any callable function.
-
-## catch
-
-Execute something if Facebook couldn't be initialized.
-
-```typescript
-then(callable: () => {}): Promise
-```
-
-`callable` - Any callable function.
-
-# Parse directive
-
-Parse Facebook plugins from current container.
-
-_Example:_
-
-
-```html
-<div gg-fb-parse>
-  <div class="fb-like"
-    data-href="http://greg.md"
-    data-layout="standard"
-    data-action="like"
-    data-size="small"
-    data-show-faces="true"
-    data-share="true"></div>
-</div>
-```
-
-## Attributes
-
-### threshold
-
-By default plugins are loaded when they appear on the screen.
-If you want plugins to load earlier, use threshold parameter.
-Setting threshold to 200 causes image to load 200 pixels before it appears on viewport.
-
-_Example:_
-
-```html
-<div gg-fb-parse threshold="200">
-  <div class="fb-like"
-    data-href="http://greg.md"
-    data-layout="standard"
-    data-action="like"
-    data-size="small"
-    data-show-faces="true"
-    data-share="true"></div>
-</div>
-```
-
-### container
-
-You can also use directive for plugins inside scrolling container,
-such as div with scroll bar. Just pass the container element.
-
-_Example:_
-
-```html
-<div #container>
-    <div gg-fb-parse threshold="200" [container]="container">
-      <div class="fb-like"
-        data-href="http://greg.md"
-        data-layout="standard"
-        data-action="like"
-        data-size="small"
-        data-show-faces="true"
-        data-share="true"></div>
-    </div>
-</div>
 ```
 
 # License
