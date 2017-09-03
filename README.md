@@ -10,6 +10,10 @@ Using Facebook SDK with Angular.
 * [Features](#features)
 * [Installation](#installation)
 * [How It Works](#how-it-works)
+* [Components](#components)
+    * [fb-page](#fb-page) - Page Plugin.
+* [Directives](#directives)
+    * [fb-parse](#fb-parse) - Parse facebook plugins.
 * [Facebook Service](#facebook-service)
 * [License](#license)
 * [Huuuge Quote](#huuuge-quote)
