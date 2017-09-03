@@ -11,7 +11,8 @@ Using Facebook SDK with Angular.
 * [Installation](#installation)
 * [How It Works](#how-it-works)
 * [Components](#components)
-    * [fb-page](#fb-page) - Page Plugin.
+    * [fb-page](#fb-page) - Page Plugin;
+    * [fb-like](#fb-like) - Like Button for the Web.
 * [Directives](#directives)
     * [fb-parse](#fb-parse) - Parse facebook plugins.
 * [Facebook Service](#facebook-service)
@@ -100,6 +101,8 @@ export class AppComponent implements OnInit {
 
 Page Plugin.
 
+[Facebook Documentation](https://developers.facebook.com/docs/plugins/page-plugin).
+
 _Example:_
 
 ```html
@@ -178,6 +181,89 @@ _Example:_
   <fb-page href="https://www.facebook.com/facebook" threshold="200" [container]="container"></fb-page>
 </div>
 ```
+
+## fb-like
+
+A single click on the Like button will 'like' pieces of content on the web and share them on Facebook.
+You can also display a Share button next to the Like button to let people add a personal message and customize who they share with.
+
+[Facebook Documentation](https://developers.facebook.com/docs/plugins/like-button).
+
+_Example:_
+
+```html
+<fb-like href="http://greg.md"></fb-like>
+```
+
+### Attributes
+
+#### action
+
+The verb to display on the button. Can be either `like` or `recommend`.
+
+Default: `like`.
+
+#### colorscheme
+
+The color scheme used by the plugin for any text outside of the button itself. Can be `light` or `dark`.
+
+Default: `light`.
+
+#### href
+
+The absolute URL of the page that will be liked.
+
+#### kid-directed-site
+
+If your web site or online service, or a portion of your service,
+is directed to children under 13 [you must enable this](https://developers.facebook.com/docs/plugins/restrictions/).
+
+Default: `false`.
+
+#### layout
+
+Selects one of the different layouts that are available for the plugin.
+Can be one of `standard`, `button_count`, `button` or `box_count`.
+
+##### Layout Settings
+
+| Layout        | Default Sizes |
+| ------------- | ------------- |
+| standard      | Minimum width: 225 pixels.<br>Default width: 450 pixels.<br>Height: 35 pixels (without photos) or 80 pixels (with photos).  |
+| box_count     | Minimum width: 55 pixels.<br>Default width: 55 pixels.<br>Height: 65 pixels.  |
+| button_count  | Minimum width: 90 pixels.<br>Default width: 90 pixels.<br>Height: 20 pixels.  |
+| button        | Minimum width: 47 pixels.<br>Default width: 47 pixels.<br>Height: 20 pixels.  |
+
+#### ref
+
+A label for tracking referrals which must be less than 50 characters
+and can contain alphanumeric characters and some punctuation (currently +/=-.:_).
+See the [FAQ](https://developers.facebook.com/docs/plugins/faqs#ref) for more details.
+
+#### share
+
+Specifies whether to include a share button beside the Like button. This only works with the XFBML version.
+
+Default: `false`.
+
+#### show-faces
+
+Specifies whether to display profile photos below the button (standard layout only).
+You must not enable this on [child-directed sites](https://developers.facebook.com/docs/plugins/restrictions/).
+
+Default: `false`.
+
+### size
+
+The button is offered in 2 sizes i.e. `large` and `small`.
+
+Default: `small`.
+
+#### width
+
+The width of the plugin (standard layout only),
+which is subject to the minimum and default width.
+Please see [Layout Settings](#layout-settings) for more details.
 
 # Directives
 

@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {FacebookService} from './facebook.service';
 import {FacebookParseDirective} from './parse.directive';
 import {FacebookPageComponent} from './page.component';
+import {FacebookLikeComponent} from './like.component';
 
 @NgModule({
   imports: [
@@ -12,10 +13,12 @@ import {FacebookPageComponent} from './page.component';
   declarations: [
     FacebookParseDirective,
     FacebookPageComponent,
+    FacebookLikeComponent,
   ],
   exports: [
     FacebookParseDirective,
     FacebookPageComponent,
+    FacebookLikeComponent,
   ],
 })
 export class FacebookModule {

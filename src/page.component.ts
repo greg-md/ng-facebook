@@ -1,4 +1,4 @@
-import {Component, Input, ElementRef, AfterViewInit, Renderer2, InjectionToken, Inject, Optional} from '@angular/core';
+import {Component, Input, ElementRef, Renderer2, Inject, Optional} from '@angular/core';
 
 import {FacebookService} from './facebook.service';
 
