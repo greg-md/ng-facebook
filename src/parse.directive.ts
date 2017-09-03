@@ -1,4 +1,7 @@
-import {Directive, Input, ElementRef, AfterViewInit, Renderer2, InjectionToken, Inject, Optional} from '@angular/core';
+import {
+  Directive, Input, ElementRef, AfterContentInit, Renderer2, InjectionToken, Inject, Optional,
+  OnDestroy
+} from '@angular/core';
 
 import {inViewport} from './facebook.utils';
 
@@ -9,7 +12,7 @@ export const FB_PARSE_LAZY_LOAD = new InjectionToken<string>('fb_parse_lazy_load
 @Directive({
   selector: '[fb-parse]',
 })
-export class FacebookParseDirective implements AfterViewInit {
+export class FacebookParseDirective implements AfterContentInit, OnDestroy {
   private _threshold: number;
 
   @Input('lazy-load') set threshold(threshold: number) {
@@ -38,11 +41,35 @@ export class FacebookParseDirective implements AfterViewInit {
     this.threshold = thresold;
   }
 
-  ngAfterViewInit() {
+  ngAfterContentInit() {
     if (this.threshold === null) {
       this.load();
     } else {
-      this.lazyLoad();
+      this.initListeners();
+
+      this.tryLoading();
+    }
+  }
+
+  ngOnDestroy() {
+    this.unloadListeners();
+  }
+
+  initListeners() {
+    this.scrollUnload = this.renderer.listen('window', 'scroll', () => {
+      this.tryLoading();
+    });
+
+    this.resizeUnload = this.renderer.listen('window', 'resize', () => {
+      this.tryLoading();
+    });
+  }
+
+  tryLoading() {
+    if (inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
+      this.load();
+
+      this.unloadListeners();
     }
   }
 
@@ -50,23 +77,8 @@ export class FacebookParseDirective implements AfterViewInit {
     this.facebook.parse(this.elementRef.nativeElement);
   }
 
-  tryLoading() {
-    if (inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
-      this.load();
-
-      this.scrollUnload && this.scrollUnload();
-      this.resizeUnload && this.resizeUnload();
-    }
-  }
-
-  lazyLoad() {
-    let tryLoading = () => {
-      this.tryLoading();
-    };
-
-    this.scrollUnload = this.renderer.listen('window', 'scroll', tryLoading);
-    this.resizeUnload = this.renderer.listen('window', 'resize', tryLoading);
-
-    setTimeout(tryLoading);
+  unloadListeners() {
+    this.scrollUnload && this.scrollUnload();
+    this.resizeUnload && this.resizeUnload();
   }
 }
