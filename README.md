@@ -98,7 +98,7 @@ export class AppComponent implements OnInit {
 
 ## fb-page
 
-Facebook Page Plugin.
+Page Plugin.
 
 _Example:_
 
@@ -106,18 +106,78 @@ _Example:_
 <fb-page href="https://www.facebook.com/facebook">Facebook</fb-page>
 ```
 
-**Attributes:**
+### Attributes
 
-* `href` - The URL of the Facebook Page;
-* `width` - The pixel width of the plugin. Min. is `180` & Max. is `500`. Default: `340`;
-* `height` - The pixel height of the plugin. Min. is `70`. Default: `500`;
-* `tabs` - Tabs to render i.e. `timeline`, `events`, `messages`.
-            Use a comma-separated list to add multiple tabs, i.e. `timeline, events`. Default: `timeline`;
-* `hide-cover` - Hide cover photo in the header. Default `false`;
-* `show-facepile` - Show profile photos when friends like this. Default `true`;
-* `hide-cta` - Hide the custom call to action button (if available). Default `false`;
-* `small-header` - Use the small header instead. Default `false`;
-* `adapt-container-width` - Try to fit inside the container width. Default `true`;
+#### href
+
+The URL of the Facebook Page.
+
+#### width
+
+The pixel width of the plugin. Min. is `180` & Max. is `500`.
+
+Default: `340`.
+
+#### height
+
+The pixel height of the plugin. Min. is `70`.
+
+Default: `500`.
+
+#### tabs
+
+Tabs to render i.e. `timeline`, `events`, `messages`.
+Use a comma-separated list to add multiple tabs, i.e. `timeline, events`.
+
+Default: `timeline`.
+
+#### hide-cover
+
+Hide cover photo in the header.
+
+Default `false`.
+
+#### show-facepile
+
+Show profile photos when friends like this.
+
+Default `true`.
+
+#### hide-cta
+
+Hide the custom call to action button (if available).
+
+Default `false`.
+
+#### small-header
+
+Use the small header instead.
+
+Default `false`.
+
+#### adapt-container-width
+
+Try to fit inside the container width.
+
+Default `true`.
+
+#### threshold
+
+By default plugins are loaded when they appear on the screen.
+If you want plugins to load earlier, use threshold parameter.
+Setting threshold to `200` causes image to load 200 pixels before it appears on viewport.
+
+#### container
+
+You can use also use `threshold` attribute inside a scrolling container, such as div with scroll bar.
+
+_Example:_
+
+```html
+<div #container>
+  <fb-page href="https://www.facebook.com/facebook" threshold="200" [container]="container"></fb-page>
+</div>
+```
 
 # Directives
 
@@ -150,7 +210,7 @@ Setting threshold to 200 causes image to load 200 pixels before it appears on vi
 _Example:_
 
 ```html
-<div gg-fb-parse threshold="200">
+<div fb-parse threshold="200">
   <div class="fb-like"
     data-href="http://greg.md"
     data-layout="standard"
@@ -170,7 +230,7 @@ _Example:_
 
 ```html
 <div #container>
-    <div gg-fb-parse threshold="200" [container]="container">
+    <div fb-parse threshold="200" [container]="container">
       <div class="fb-like"
         data-href="http://greg.md"
         data-layout="standard"
