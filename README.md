@@ -400,6 +400,14 @@ export class WidgetComponent implements OnInit {
 }
 ```
 
+## then
+
+Same as `Promise.then`.
+
+## catch
+
+Same as `Promise.catch`.
+
 # License
 
 MIT © [Grigorii Duca](http://greg.md)

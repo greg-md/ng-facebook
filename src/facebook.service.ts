@@ -67,6 +67,14 @@ export class FacebookService {
     });
   }
 
+  then(callable) {
+    return this.promise.then(callable);
+  }
+
+  catch(callable) {
+    return this.promise.catch(callable);
+  }
+
   private loadScript(src: string, callback: () => void) {
     if (this.script) {
       delete window.FB;
