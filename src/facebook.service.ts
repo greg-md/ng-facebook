@@ -1,4 +1,4 @@
-import {Injectable, InjectionToken} from '@angular/core';
+import {Injectable, InjectionToken, NgZone} from '@angular/core';
 
 declare const window: {
   FB: any;
@@ -45,6 +45,8 @@ export class FacebookService {
     return FB;
   }
 
+  constructor(private ngZone: NgZone) {}
+
   init(params: FacebookDefaults = {}, locale: string = 'en_US') {
     params = Object.assign({}, this.defaults, params);
 
@@ -76,31 +78,33 @@ export class FacebookService {
   }
 
   private loadScript(src: string, callback: () => void) {
-    if (this.script) {
-      delete window.FB;
+    this.ngZone.runOutsideAngular(() => {
+      if (this.script) {
+        delete window.FB;
 
-      let jsSdk: HTMLElement, fbRoot: HTMLElement;
+        let jsSdk: HTMLElement, fbRoot: HTMLElement;
 
-      if (jsSdk = document.getElementById('facebook-jssdk')) {
+        if (jsSdk = document.getElementById('facebook-jssdk')) {
           jsSdk.parentNode.removeChild(jsSdk);
-      }
+        }
 
-      if (fbRoot = document.getElementById('fb-root')) {
+        if (fbRoot = document.getElementById('fb-root')) {
           fbRoot.parentNode.removeChild(fbRoot);
+        }
+
+        this.script.parentNode.removeChild(this.script);
       }
 
-      this.script.parentNode.removeChild(this.script);
-    }
+      this.script = document.createElement('script');
 
-    this.script = document.createElement('script');
+      this.script.type = 'text/javascript';
 
-    this.script.type = 'text/javascript';
+      this.script.src = src;
 
-    this.script.src = src;
+      this.script.onload = callback;
 
-    this.script.onload = callback;
-
-    document.getElementsByTagName('head')[0].appendChild(this.script);
+      document.getElementsByTagName('head')[0].appendChild(this.script);
+    });
 
     return this;
   }
