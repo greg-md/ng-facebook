@@ -1,4 +1,4 @@
-import {Component, Input, ElementRef, Renderer2, Inject, Optional} from '@angular/core';
+import {Component, Input, ElementRef, Renderer2, Inject, Optional, ChangeDetectionStrategy} from '@angular/core';
 
 import {FacebookService} from './facebook.service';
 
@@ -21,6 +21,7 @@ import {FacebookParseDirective, FB_PARSE_LAZY_LOAD} from './parse.directive';
       [attr.data-width]="width"
     ><ng-content></ng-content></div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FacebookLikeComponent extends FacebookParseDirective {
   @Input() action: 'like' | 'recommend' = 'like';

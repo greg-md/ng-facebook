@@ -1,8 +1,5 @@
-import {Injectable, InjectionToken, NgZone} from '@angular/core';
-
-declare const window: {
-  FB: any;
-};
+import {Inject, Injectable, InjectionToken, NgZone, PLATFORM_ID} from '@angular/core';
+import {isPlatformBrowser} from "@angular/common";
 
 export interface FacebookDefaults {
   appId?: string;
@@ -28,14 +25,16 @@ export interface Facebook {
 
 declare const FB: Facebook;
 
+declare const window: {
+  FB: Facebook;
+};
+
 @Injectable()
 export class FacebookService {
   private defaults: FacebookDefaults = {
     xfbml: false,
     version: 'v2.8'
   };
-
-  private script: HTMLScriptElement;
 
   private _promise: Promise<any>;
 
@@ -45,7 +44,10 @@ export class FacebookService {
     return FB;
   }
 
-  constructor(private ngZone: NgZone) {}
+  constructor(
+    private ngZone: NgZone,
+    @Inject(PLATFORM_ID) private platformId: string,
+  ) {}
 
   init(params: FacebookDefaults = {}, locale: string = 'en_US') {
     params = Object.assign({}, this.defaults, params);
@@ -78,32 +80,32 @@ export class FacebookService {
   }
 
   private loadScript(src: string, callback: () => void) {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
     this.ngZone.runOutsideAngular(() => {
-      if (this.script) {
-        delete window.FB;
+      delete window.FB;
 
-        let jsSdk: HTMLElement, fbRoot: HTMLElement;
+      let jsSdk: HTMLElement, fbRoot: HTMLElement;
 
-        if (jsSdk = document.getElementById('facebook-jssdk')) {
-          jsSdk.parentNode.removeChild(jsSdk);
-        }
-
-        if (fbRoot = document.getElementById('fb-root')) {
-          fbRoot.parentNode.removeChild(fbRoot);
-        }
-
-        this.script.parentNode.removeChild(this.script);
+      if (jsSdk = document.getElementById('facebook-jssdk')) {
+        jsSdk.parentNode.removeChild(jsSdk);
       }
 
-      this.script = document.createElement('script');
+      if (fbRoot = document.getElementById('fb-root')) {
+        fbRoot.parentNode.removeChild(fbRoot);
+      }
 
-      this.script.type = 'text/javascript';
+      let script = document.createElement('script');
 
-      this.script.src = src;
+      script.id = 'facebook-jssdk';
 
-      this.script.onload = callback;
+      script.src = src;
 
-      document.getElementsByTagName('head')[0].appendChild(this.script);
+      script.onload = callback;
+
+      document.head.appendChild(script);
     });
 
     return this;

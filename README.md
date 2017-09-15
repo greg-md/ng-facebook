@@ -105,6 +105,15 @@ By default plugins are loaded when Facebook SDK is initialized.
 If you want plugins to be lazy loaded, use `lazy-load` attribute.
 Setting `lazy-load` to `200` causes image to load 200 pixels before it appears on viewport.
 
+You can also define lazy loading threshold globally providing `FB_PARSE_LAZY_LOAD` token in module providers.
+
+```typescript
+{
+  provide: FB_PARSE_LAZY_LOAD,
+  useValue: 200,
+}
+```
+
 #### container
 
 You can use also use `lazy-load` attribute inside a scrolling container, such as div with scroll bar.
