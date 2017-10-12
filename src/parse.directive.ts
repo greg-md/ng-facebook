@@ -74,7 +74,7 @@ export class FacebookParseDirective implements AfterContentInit, OnDestroy {
   }
 
   load() {
-    this.facebook.parse(this.elementRef.nativeElement);
+    this.facebook.parse(this.elementRef.nativeElement).subscribe();
   }
 
   unloadListeners() {

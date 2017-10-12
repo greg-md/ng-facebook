@@ -1,5 +1,7 @@
-import {NgModule, ModuleWithProviders, InjectionToken} from '@angular/core';
+import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
+
+import 'rxjs/add/operator/map';
 
 import {FacebookService} from './facebook.service';
 import {FacebookParseDirective} from './parse.directive';

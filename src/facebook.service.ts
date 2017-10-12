@@ -1,26 +1,48 @@
 import {Inject, Injectable, InjectionToken, NgZone, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from "@angular/common";
+import {Observable} from "rxjs/Observable";
+import {ReplaySubject} from "rxjs/ReplaySubject";
 
-export interface FacebookDefaults {
+export interface FacebookInitParams {
   appId?: string;
   status?: boolean;
   xfbml?: boolean;
   version?: string;
 }
 
+export interface FacebookAuth {
+  accessToken: string;
+  expiresIn: number;
+  signedRequest: string;
+  userID: string;
+}
+
 export interface FacebookLoginResponse {
   status: string;
-  authResponse: {
-    accessToken: string;
-  };
+  authResponse: FacebookAuth;
+}
+
+export interface FacebookLoginOptions {
+  auth_type: 'rerequest';
+  scope: string;
+  return_scopes: boolean;
+  enable_profile_selector: boolean;
+  profile_selector_ids: string;
 }
 
 export interface Facebook {
     XFBML: {
-        parse: (element: Node) => void;
+        parse: (element: HTMLElement, cb?: () => void) => void;
     };
 
-    init: (params: FacebookDefaults) => void;
+    init: (params: FacebookInitParams) => void;
+
+    login: (callback?: (response: FacebookLoginResponse) => void, options?: FacebookLoginOptions) => void;
+}
+
+export const FACEBOOK_DEFAULTS: FacebookInitParams = {
+  xfbml: false,
+  version: 'v2.10'
 }
 
 declare const FB: Facebook;
@@ -31,119 +53,120 @@ declare const window: {
 
 @Injectable()
 export class FacebookService {
-  private defaults: FacebookDefaults = {
-    xfbml: false,
-    version: 'v2.8'
-  };
-
-  private _promise: Promise<any>;
-
-  private resolver: () => void;
-
-  get sdk(): Facebook {
-    return FB;
-  }
+  sdk = new ReplaySubject<Facebook>(1);
 
   constructor(
     private ngZone: NgZone,
     @Inject(PLATFORM_ID) private platformId: string,
   ) {}
 
-  init(params: FacebookDefaults = {}, locale: string = 'en_US') {
-    params = Object.assign({}, this.defaults, params);
-
-    this.newResolve();
-
-    this.loadScript('//connect.facebook.net/' + (locale || 'en_US') + '/sdk.js', () => {
-      this.sdk.init(params);
-
-      this.reloadRendered();
-
-      this.resolve();
-    });
-
-    return this.promise;
-  }
-
-  parse(element: HTMLElement) {
-    return this.promise.then(() => {
-      this.sdk.XFBML.parse(element);
-    });
-  }
-
-  then(callable) {
-    return this.promise.then(callable);
-  }
-
-  catch(callable) {
-    return this.promise.catch(callable);
-  }
-
-  private loadScript(src: string, callback: () => void) {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-
-    this.ngZone.runOutsideAngular(() => {
-      delete window.FB;
-
-      let jsSdk: HTMLElement, fbRoot: HTMLElement;
-
-      if (jsSdk = document.getElementById('facebook-jssdk')) {
-        jsSdk.parentNode.removeChild(jsSdk);
+  load(locale: string = 'en_US'): Observable<Facebook> {
+    return Observable.create(subscriber => {
+      if (!isPlatformBrowser(this.platformId)) {
+        return;
       }
 
-      if (fbRoot = document.getElementById('fb-root')) {
-        fbRoot.parentNode.removeChild(fbRoot);
-      }
+      this.ngZone.runOutsideAngular(() => {
+        delete window.FB;
 
-      let script = document.createElement('script');
+        let jsSdk: HTMLElement, fbRoot: HTMLElement;
 
-      script.id = 'facebook-jssdk';
+        if (jsSdk = document.getElementById('facebook-jssdk')) {
+          jsSdk.parentNode.removeChild(jsSdk);
+        }
 
-      script.src = src;
+        if (fbRoot = document.getElementById('fb-root')) {
+          fbRoot.parentNode.removeChild(fbRoot);
+        }
 
-      script.onload = callback;
+        let script = document.createElement('script');
 
-      document.head.appendChild(script);
-    });
+        script.id = 'facebook-jssdk';
 
-    return this;
-  }
+        script.src = '//connect.facebook.net/' + (locale || 'en_US') + '/sdk.js';
 
-  private reloadRendered() {
-    Array.from(document.querySelectorAll('[fb-xfbml-state="rendered"]')).forEach(node => {
-      this.sdk.XFBML.parse(node.parentNode);
-    });
-  }
+        script.onload = () => {
+          subscriber.next(FB);
 
-  private newResolve() {
-    if (!this.resolver) {
-      this.newPromise();
-    }
-  }
+          subscriber.complete();
+        };
 
-  private resolve() {
-    if (!this.resolver) {
-      this.newPromise();
-    }
+        script.onerror = () => {
+          subscriber.error('Facebook SDK could not be loaded.');
 
-    this.resolver();
+          subscriber.complete();
+        };
 
-    this.resolver = null;
-  }
+        document.head.appendChild(script);
+      });
+    }).map(sdk => {
+      this.sdk.next(sdk);
 
-  private newPromise() {
-    this._promise = new Promise(res => {
-      this.resolver = res;
+      return sdk;
     });
   }
 
-  private get promise() {
-    if (!this._promise) {
-      this.newPromise();
-    }
+  init(params: FacebookInitParams = {}, locale: string = 'en_US') {
+    return this.load(locale).map(sdk => {
+      params = Object.assign({}, FACEBOOK_DEFAULTS, params);
 
-    return this._promise;
+      sdk.init(params);
+
+      this.reloadRenderedElements().subscribe();
+
+      return sdk;
+    });
+  }
+
+  login(): Observable<FacebookAuth> {
+    return Observable.create(subscriber => {
+      this.sdk.subscribe(sdk => {
+        sdk.login(response => {
+          console.log('facebook login', response);
+
+          if (response.authResponse) {
+            subscriber.next(response.authResponse);
+          } else {
+            subscriber.error(response);
+          }
+
+          subscriber.complete();
+        });
+      });
+    });
+  }
+
+  parse(element: HTMLElement): Observable<HTMLElement> {
+    return Observable.create(subscriber => {
+      this.sdk.subscribe(sdk => {
+        sdk.XFBML.parse(element, () => {
+          subscriber.next(element);
+
+          subscriber.complete();
+        });
+      });
+    });
+  }
+
+  reloadRenderedElements(): Observable<HTMLElement> {
+    return Observable.create(subscriber => {
+      this.sdk.subscribe(sdk => {
+        let elements = document.querySelectorAll('[fb-xfbml-state="rendered"]');
+
+        let processing = elements.length;
+
+        Array.from(elements).forEach(node => {
+          sdk.XFBML.parse(node.parentElement, () => {
+            --processing;
+
+            subscriber.next(node.parentElement);
+
+            if (processing <= 0) {
+              subscriber.complete();
+            }
+          });
+        });
+      });
+    });
   }
 }

@@ -70,16 +70,8 @@ import { FacebookService } from '@greg-md/ng-facebook';
     <a tabindex="0" (click)="changeLanguage('en_EN')">English</a>
     |
     <a tabindex="0" (click)="changeLanguage('ro_RO')">Romanian</a>
-    
-    <div fb-parse>
-      <div class="fb-like"
-        data-href="http://greg.md"
-        data-layout="standard"
-        data-action="like"
-        data-size="small"
-        data-show-faces="true"
-        data-share="true"></div>
-    </div>
+
+    <fb-like href="http://greg.md"></fb-like>
   `,
 })
 export class AppComponent implements OnInit {
@@ -332,40 +324,133 @@ _Example:_
 
 Below is a list of **supported methods**:
 
-* [init](#init) - Load and initialize Facebook sdk;
+* [load](#load) - Load Facebook SDK;
+* [init](#init) - Load and initialize Facebook SDK;
+* [login](#login) - Login via Facebook;
 * [parse](#parse) - Parse Facebook plugins from a HTMLElement;
+* [reloadRenderedElements](#reloadRenderedElements) - Reload all rendered elements from DOM;
 
-## init
+## load
 
-Load and initialize Facebook sdk.
+Load Facebook SDK.
 
 ```typescript
-init(params: FacebookDefaults = {}, lang: string = 'en_US'): Promise
+load(locale: string = 'en_US'): Observable<Facebook>
 ```
 
-`params` - The same as [FB.init(params)](https://developers.facebook.com/docs/javascript/reference/FB.init/v2.8) parameters;  
-`lang` - Facebook sdk language. See [Localization & Translation](https://developers.facebook.com/docs/internationalization).
+`lang` - Facebook SDK locale. See [Localization & Translation](https://developers.facebook.com/docs/internationalization).
 
 _Example:_
 
 ```typescript
-import { Injectable } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { FacebookService } from '@greg-md/ng-facebook';
 
-@Injectable()
-export class AppService {
-  constructor(public facebook: FacebookService) { }
+@Component({
+  selector: 'app',
+  template: `
+    <fb-page href="https://www.facebook.com/facebook"></fb-page>
+  `,
+})
+export class AppComponent implements OnInit {
+  constructor(private facebookService: FacebookService) { }
 
-  loadAndInitFacebook() {
-    return this.facebook.init();
+  ngOnInit() {
+    this.facebookService.load().subscribe(sdk => {
+      // do something
+    });
   }
-  
-  changeFacebookSettings() {
-    return this.facebook.init({
-      appId : '{your-app-id}',
-      version: 'v2.7'
-    }, 'ro_RO');
+}
+```
+
+## init
+
+Load and initialize Facebook SDK.
+
+This method extends the `load` method, by initializing the Facebook SDK in the meantime.
+
+```typescript
+init(params: FacebookInitParams = {}, locale: string = 'en_US'): Observable<Facebook>
+```
+
+`params` - The same as [FB.init(params)](https://developers.facebook.com/docs/javascript/reference/FB.init/v2.8) parameters;  
+`lang` - Facebook SDK locale. See [Localization & Translation](https://developers.facebook.com/docs/internationalization).
+
+_Example:_
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+
+import { FacebookService } from '@greg-md/ng-facebook';
+
+@Component({
+  selector: 'app',
+  template: `
+    <button type="button" (click)="changeLocale()">Change Locale</button>
+    
+    <fb-page href="https://www.facebook.com/facebook"></fb-page>
+  `,
+})
+export class AppComponent implements OnInit {
+  settings = {
+    appId : '{your-app-id}',
+    version: 'v2.7',
+  };
+
+  constructor(private facebookService: FacebookService) { }
+
+  ngOnInit() {
+    this.facebookService.init(this.settings).subscribe();
+  }
+
+  changeLocale() {
+    return this.facebookService.init(this.settings, 'ro_RO').subscribe();
+  }
+}
+```
+
+## login
+
+Facebook Login.
+
+```typescript
+login(): Observable<FacebookAuth>
+```
+
+_Example:_
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+
+import { FacebookService } from '@greg-md/ng-facebook';
+
+@Component({
+  selector: 'app',
+  template: `
+    <button type="button" (click)="loginViaFacebook()">Login via Facebook</button>
+    
+    <p *ngIf="userID">User ID: {{ userID }}</p>
+  `,
+})
+export class AppComponent implements OnInit {
+  settings = {
+    appId : '{your-app-id}',
+    version: 'v2.7',
+  };
+
+  userID: string = null;
+
+  constructor(private facebookService: FacebookService) { }
+
+  ngOnInit() {
+    this.facebookService.init(this.settings).subscribe();
+  }
+
+  loginViaFacebook() {
+    return this.facebookService.login.subscribe(auth => {
+      this.userID = auth.userID;
+    });
   }
 }
 ```
@@ -375,7 +460,7 @@ export class AppService {
 Parse Facebook plugins from a HTMLElement.
 
 ```typescript
-parse(element: HTMLElement): Promise
+parse(element: HTMLElement): Observable<HTMLElement>
 ```
 
 `element` - An HTMLElement.
@@ -400,22 +485,52 @@ import { FacebookService } from '@greg-md/ng-facebook';
       data-show-posts="false"></div>
   `,
 })
-export class WidgetComponent implements OnInit {
+export class FacebookPageComponent implements OnInit {
   constructor(private: elementRef: ElementRef, private facebook: FacebookService) { }
 
   ngOnInit() {
-    this.facebook.parse(this.elementRef.nativeElement);
+    this.facebook.parse(this.elementRef.nativeElement).subscribe();
   }
 }
 ```
 
-## then
+## reloadRenderedElements
 
-Same as `Promise.then`.
+Reload all Facebook rendered elements from DOM.
 
-## catch
+```typescript
+reloadRenderedElements(): Observable<HTMLElement>
+```
 
-Same as `Promise.catch`.
+_Example:_
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+
+import { FacebookService } from '@greg-md/ng-facebook';
+
+@Component({
+  selector: 'app',
+  template: `
+    <button type="button" (click)="changeLocale()">Change Locale</button>
+    
+    <fb-page href="https://www.facebook.com/facebook"></fb-page>
+  `,
+})
+export class AppComponent implements OnInit {
+  constructor(private facebookService: FacebookService) { }
+
+  ngOnInit() {
+    this.facebookService.load().subscribe();
+  }
+
+  changeLocale() {
+    this.facebookService.load('ro_RO').subscribe(sdk => {
+      this.facebookService.reloadRenderedElements();
+    });
+  }
+}
+```
 
 # License
 
