@@ -448,7 +448,7 @@ export class AppComponent implements OnInit {
   }
 
   loginViaFacebook() {
-    return this.facebookService.login().subscribe(auth => {
+    this.facebookService.login().subscribe(auth => {
       this.userID = auth.userID;
     });
   }
