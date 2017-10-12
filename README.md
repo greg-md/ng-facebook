@@ -486,10 +486,10 @@ import { FacebookService } from '@greg-md/ng-facebook';
   `,
 })
 export class FacebookPageComponent implements OnInit {
-  constructor(private: elementRef: ElementRef, private facebook: FacebookService) { }
+  constructor(private: elementRef: ElementRef, private facebookService: FacebookService) { }
 
   ngOnInit() {
-    this.facebook.parse(this.elementRef.nativeElement).subscribe();
+    this.facebookService.parse(this.elementRef.nativeElement).subscribe();
   }
 }
 ```
