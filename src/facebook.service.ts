@@ -23,11 +23,34 @@ export interface FacebookLoginResponse {
 }
 
 export interface FacebookLoginOptions {
-  auth_type: 'rerequest';
-  scope: string;
-  return_scopes: boolean;
-  enable_profile_selector: boolean;
-  profile_selector_ids: string;
+  auth_type?: 'rerequest';
+  scope?: string;
+  return_scopes?: boolean;
+  enable_profile_selector?: boolean;
+  profile_selector_ids?: string;
+}
+
+export interface FacebookApiError {
+  message: string;
+}
+
+export interface FacebookApiCallback {
+  error?: FacebookApiError;
+  [propName: string]: any;
+}
+
+// export enum FacebookApiMethodArg {
+//   Get = 'get',
+//   Post = 'post',
+//   Delete = 'delete',
+// }
+
+export interface FacebookApiParamsArg {
+  [propName: string]: any;
+}
+
+export interface FacebookApiCallbackArg {
+  (response?: FacebookApiCallback): void;
 }
 
 export interface Facebook {
@@ -38,12 +61,14 @@ export interface Facebook {
     init: (params: FacebookInitParams) => void;
 
     login: (callback?: (response: FacebookLoginResponse) => void, options?: FacebookLoginOptions) => void;
+
+    api: (path: string, method?: 'get' | 'post' | 'delete' | FacebookApiParamsArg | FacebookApiCallbackArg, params?: FacebookApiParamsArg | FacebookApiCallbackArg, callback?: FacebookApiCallbackArg) => void;
 }
 
 export const FACEBOOK_DEFAULTS: FacebookInitParams = {
   xfbml: false,
   version: 'v2.10'
-}
+};
 
 declare const FB: Facebook;
 
@@ -118,16 +143,30 @@ export class FacebookService {
     });
   }
 
-  login(): Observable<FacebookAuth> {
+  login(options?: FacebookLoginOptions): Observable<FacebookAuth> {
     return Observable.create(subscriber => {
       this.sdk.subscribe(sdk => {
         sdk.login(response => {
-          console.log('facebook login', response);
-
           if (response.authResponse) {
             subscriber.next(response.authResponse);
           } else {
             subscriber.error(response);
+          }
+
+          subscriber.complete();
+        }, options);
+      });
+    });
+  }
+
+  api(path: string, method?: 'get' | 'post' | 'delete' | FacebookApiParamsArg, params?: FacebookApiParamsArg): Observable<Object> {
+    return Observable.create(subscriber => {
+      this.sdk.subscribe(sdk => {
+        sdk.api(path, method, params, response => {
+          if (response && !response.error) {
+            subscriber.next(response);
+          } else {
+            subscriber.error(response ? response.error : null);
           }
 
           subscriber.complete();

@@ -327,6 +327,7 @@ Below is a list of **supported methods**:
 * [load](#load) - Load Facebook SDK;
 * [init](#init) - Load and initialize Facebook SDK;
 * [login](#login) - Login via Facebook;
+* [api](#api) - Facebook API;
 * [parse](#parse) - Parse Facebook plugins from a HTMLElement;
 * [reloadRenderedElements](#reloadRenderedElements) - Reload all rendered elements from DOM;
 
@@ -415,7 +416,7 @@ export class AppComponent implements OnInit {
 Facebook Login.
 
 ```typescript
-login(): Observable<FacebookAuth>
+login(options?: FacebookLoginOptions): Observable<FacebookAuth>
 ```
 
 _Example:_
@@ -439,7 +440,7 @@ export class AppComponent implements OnInit {
     version: 'v2.7',
   };
 
-  userID: string = null;
+  userID: string;
 
   constructor(private facebookService: FacebookService) { }
 
@@ -448,8 +449,53 @@ export class AppComponent implements OnInit {
   }
 
   loginViaFacebook() {
-    this.facebookService.login().subscribe(auth => {
+    this.facebookService.login({scope: 'email'}).subscribe(auth => {
       this.userID = auth.userID;
+    });
+  }
+}
+```
+
+## api
+
+Facebook API.
+
+```typescript
+api(path: string, method?: 'get' | 'post' | 'delete' | FacebookApiParamsArg, params?: FacebookApiParamsArg): Observable<Object>
+```
+
+_Example:_
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+
+import { FacebookService } from '@greg-md/ng-facebook';
+
+@Component({
+  selector: 'app',
+  template: `
+    <button type="button" (click)="getFacebookName()">Get Facebook Name</button>
+    
+    <p *ngIf="name">Name: {{ name }}</p>
+  `,
+})
+export class AppComponent implements OnInit {
+  settings = {
+    appId : '{your-app-id}',
+    version: 'v2.7',
+  };
+
+  name: string;
+
+  constructor(private facebookService: FacebookService) { }
+
+  ngOnInit() {
+    this.facebookService.init(this.settings).subscribe();
+  }
+
+  getFacebookName() {
+    this.facebookService.api('/me').subscribe(me => {
+      this.name = me.name;
     });
   }
 }
