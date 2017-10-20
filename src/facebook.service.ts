@@ -111,15 +111,19 @@ export class FacebookService {
         script.src = '//connect.facebook.net/' + (locale || 'en_US') + '/sdk.js';
 
         script.onload = () => {
-          subscriber.next(FB);
+          this.ngZone.run(() => {
+            subscriber.next(FB);
 
-          subscriber.complete();
+            subscriber.complete();
+          });
         };
 
         script.onerror = () => {
-          subscriber.error('Facebook SDK could not be loaded.');
+          this.ngZone.run(() => {
+            subscriber.error('Facebook SDK could not be loaded.');
 
-          subscriber.complete();
+            subscriber.complete();
+          });
         };
 
         document.head.appendChild(script);
@@ -146,15 +150,19 @@ export class FacebookService {
   login(options?: FacebookLoginOptions): Observable<FacebookAuth> {
     return Observable.create(subscriber => {
       this.sdk.subscribe(sdk => {
-        sdk.login(response => {
-          if (response.authResponse) {
-            subscriber.next(response.authResponse);
-          } else {
-            subscriber.error(response);
-          }
+        this.ngZone.runOutsideAngular(() => {
+          sdk.login(response => {
+            this.ngZone.run(() => {
+              if (response.authResponse) {
+                subscriber.next(response.authResponse);
+              } else {
+                subscriber.error(response);
+              }
 
-          subscriber.complete();
-        }, options);
+              subscriber.complete();
+            });
+          }, options);
+        });
       });
     });
   }
@@ -162,14 +170,18 @@ export class FacebookService {
   api(path: string, method?: 'get' | 'post' | 'delete' | FacebookApiParamsArg, params?: FacebookApiParamsArg): Observable<Object> {
     return Observable.create(subscriber => {
       this.sdk.subscribe(sdk => {
-        sdk.api(path, method, params, response => {
-          if (response && !response.error) {
-            subscriber.next(response);
-          } else {
-            subscriber.error(response ? response.error : null);
-          }
+        this.ngZone.runOutsideAngular(() => {
+          sdk.api(path, method, params, response => {
+            this.ngZone.run(() => {
+              if (response && !response.error) {
+                subscriber.next(response);
+              } else {
+                subscriber.error(response ? response.error : null);
+              }
 
-          subscriber.complete();
+              subscriber.complete();
+            });
+          });
         });
       });
     });
@@ -178,10 +190,14 @@ export class FacebookService {
   parse(element: HTMLElement): Observable<HTMLElement> {
     return Observable.create(subscriber => {
       this.sdk.subscribe(sdk => {
-        sdk.XFBML.parse(element, () => {
-          subscriber.next(element);
+        this.ngZone.runOutsideAngular(() => {
+          sdk.XFBML.parse(element, () => {
+            this.ngZone.run(() => {
+              subscriber.next(element);
 
-          subscriber.complete();
+              subscriber.complete();
+            });
+          });
         });
       });
     });
@@ -195,14 +211,18 @@ export class FacebookService {
         let processing = elements.length;
 
         Array.from(elements).forEach(node => {
-          sdk.XFBML.parse(node.parentElement, () => {
-            --processing;
+          this.ngZone.runOutsideAngular(() => {
+            sdk.XFBML.parse(node.parentElement, () => {
+              this.ngZone.run(() => {
+                --processing;
 
-            subscriber.next(node.parentElement);
+                subscriber.next(node.parentElement);
 
-            if (processing <= 0) {
-              subscriber.complete();
-            }
+                if (processing <= 0) {
+                  subscriber.complete();
+                }
+              });
+            });
           });
         });
       });
