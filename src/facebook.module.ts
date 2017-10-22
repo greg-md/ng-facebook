@@ -2,6 +2,7 @@ import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
 
 import {FacebookService} from './facebook.service';
 import {FacebookParseDirective} from './parse.directive';

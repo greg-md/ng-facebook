@@ -1,4 +1,4 @@
-import {Inject, Injectable, InjectionToken, NgZone, PLATFORM_ID} from '@angular/core';
+import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
 import {isPlatformBrowser} from "@angular/common";
 import {Observable} from "rxjs/Observable";
 import {ReplaySubject} from "rxjs/ReplaySubject";
@@ -34,23 +34,21 @@ export interface FacebookApiError {
   message: string;
 }
 
+export const enum FacebookApiMethod {
+  Get = 'get',
+  Post = 'post',
+  Delete = 'delete',
+}
+
+export interface FacebookApiParams {
+  [propName: string]: any;
+}
+
 export interface FacebookApiCallback {
-  error?: FacebookApiError;
-  [propName: string]: any;
-}
-
-// export enum FacebookApiMethodArg {
-//   Get = 'get',
-//   Post = 'post',
-//   Delete = 'delete',
-// }
-
-export interface FacebookApiParamsArg {
-  [propName: string]: any;
-}
-
-export interface FacebookApiCallbackArg {
-  (response?: FacebookApiCallback): void;
+  (response?: {
+    error?: FacebookApiError;
+    [propName: string]: any;
+  }): void;
 }
 
 export interface Facebook {
@@ -62,7 +60,7 @@ export interface Facebook {
 
     login: (callback?: (response: FacebookLoginResponse) => void, options?: FacebookLoginOptions) => void;
 
-    api: (path: string, method?: 'get' | 'post' | 'delete' | FacebookApiParamsArg | FacebookApiCallbackArg, params?: FacebookApiParamsArg | FacebookApiCallbackArg, callback?: FacebookApiCallbackArg) => void;
+    api: (path: string, method?: FacebookApiMethod | FacebookApiParams | FacebookApiCallback, params?: FacebookApiParams | FacebookApiCallback, callback?: FacebookApiCallback) => void;
 }
 
 export const FACEBOOK_DEFAULTS: FacebookInitParams = {
@@ -136,14 +134,12 @@ export class FacebookService {
   }
 
   init(params: FacebookInitParams = {}, locale: string = 'en_US') {
-    return this.load(locale).map(sdk => {
+    return this.load(locale).do<Facebook>(sdk => {
       params = Object.assign({}, FACEBOOK_DEFAULTS, params);
 
       sdk.init(params);
 
       this.reloadRenderedElements().subscribe();
-
-      return sdk;
     });
   }
 
@@ -167,7 +163,7 @@ export class FacebookService {
     });
   }
 
-  api(path: string, method?: 'get' | 'post' | 'delete' | FacebookApiParamsArg, params?: FacebookApiParamsArg): Observable<Object> {
+  api(path: string, method?: FacebookApiMethod | FacebookApiParams, params?: FacebookApiParams): Observable<Object> {
     return Observable.create(subscriber => {
       this.sdk.subscribe(sdk => {
         this.ngZone.runOutsideAngular(() => {
