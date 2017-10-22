@@ -1,7 +1,7 @@
-import {Inject, Injectable, NgZone, PLATFORM_ID} from '@angular/core';
-import {isPlatformBrowser} from "@angular/common";
-import {Observable} from "rxjs/Observable";
-import {ReplaySubject} from "rxjs/ReplaySubject";
+import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 export interface FacebookInitParams {
   appId?: string;
@@ -52,15 +52,15 @@ export interface FacebookApiCallback {
 }
 
 export interface Facebook {
-    XFBML: {
-        parse: (element: HTMLElement, cb?: () => void) => void;
-    };
+  XFBML: {
+    parse: (element: HTMLElement, cb?: () => void) => void;
+  };
 
-    init: (params: FacebookInitParams) => void;
+  init: (params: FacebookInitParams) => void;
 
-    login: (callback?: (response: FacebookLoginResponse) => void, options?: FacebookLoginOptions) => void;
+  login: (callback?: (response: FacebookLoginResponse) => void, options?: FacebookLoginOptions) => void;
 
-    api: (path: string, method?: FacebookApiMethod | FacebookApiParams | FacebookApiCallback, params?: FacebookApiParams | FacebookApiCallback, callback?: FacebookApiCallback) => void;
+  api: (path: string, method?: FacebookApiMethod | FacebookApiParams | FacebookApiCallback, params?: FacebookApiParams | FacebookApiCallback, callback?: FacebookApiCallback) => void;
 }
 
 export const FACEBOOK_DEFAULTS: FacebookInitParams = {
@@ -81,7 +81,8 @@ export class FacebookService {
   constructor(
     private ngZone: NgZone,
     @Inject(PLATFORM_ID) private platformId: string,
-  ) {}
+  ) {
+  }
 
   load(locale: string = 'en_US'): Observable<Facebook> {
     return Observable.create(subscriber => {

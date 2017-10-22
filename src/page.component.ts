@@ -1,26 +1,28 @@
-import {Component, Input, ElementRef, Renderer2, Inject, Optional, ChangeDetectionStrategy} from '@angular/core';
+import { Component, Input, ElementRef, Renderer2, Inject, Optional, ChangeDetectionStrategy } from '@angular/core';
 
-import {FacebookService} from './facebook.service';
+import { FacebookService } from './facebook.service';
 
-import {FacebookParseDirective, FB_PARSE_LAZY_LOAD} from './parse.directive';
+import { FacebookParseDirective, FB_PARSE_LAZY_LOAD } from './parse.directive';
 
 @Component({
   selector: 'fb-page',
   styles: [],
   template: `
     <div class="fb-page"
-      [attr.data-href]="href"
-      [attr.data-width]="width"
-      [attr.data-height]="height"
-      [attr.data-tabs]="tabs"
-      [attr.data-hide-cover]="hideCover"
-      [attr.data-show-facepile]="showFacepile"
-      [attr.data-hide-cta]="hideCta"
-      [attr.data-small-header]="smallHeader"
-      [attr.data-adapt-container-width]="adaptContainerWidth"
+         [attr.data-href]="href"
+         [attr.data-width]="width"
+         [attr.data-height]="height"
+         [attr.data-tabs]="tabs"
+         [attr.data-hide-cover]="hideCover"
+         [attr.data-show-facepile]="showFacepile"
+         [attr.data-hide-cta]="hideCta"
+         [attr.data-small-header]="smallHeader"
+         [attr.data-adapt-container-width]="adaptContainerWidth"
     >
       <blockquote [attr.cite]="href" class="fb-xfbml-parse-ignore">
-        <a [href]="href"><ng-content></ng-content></a>
+        <a [href]="href">
+          <ng-content></ng-content>
+        </a>
       </blockquote>
     </div>
   `,

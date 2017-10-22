@@ -3,9 +3,9 @@ import {
   OnDestroy
 } from '@angular/core';
 
-import {inViewport} from './facebook.utils';
+import { inViewport } from './facebook.utils';
 
-import {FacebookService} from './facebook.service';
+import { FacebookService } from './facebook.service';
 
 export const FB_PARSE_LAZY_LOAD = new InjectionToken<string>('fb_parse_lazy_load');
 
@@ -15,7 +15,8 @@ export const FB_PARSE_LAZY_LOAD = new InjectionToken<string>('fb_parse_lazy_load
 export class FacebookParseDirective implements AfterContentInit, OnDestroy {
   private _threshold: number;
 
-  @Input('lazy-load') set threshold(threshold: number) {
+  @Input('lazy-load')
+  set threshold(threshold: number) {
     if (threshold === null || (typeof threshold === 'string' && threshold === '')) {
       this._threshold = null;
     } else {

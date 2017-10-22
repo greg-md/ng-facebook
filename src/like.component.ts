@@ -1,25 +1,27 @@
-import {Component, Input, ElementRef, Renderer2, Inject, Optional, ChangeDetectionStrategy} from '@angular/core';
+import { Component, Input, ElementRef, Renderer2, Inject, Optional, ChangeDetectionStrategy } from '@angular/core';
 
-import {FacebookService} from './facebook.service';
+import { FacebookService } from './facebook.service';
 
-import {FacebookParseDirective, FB_PARSE_LAZY_LOAD} from './parse.directive';
+import { FacebookParseDirective, FB_PARSE_LAZY_LOAD } from './parse.directive';
 
 @Component({
   selector: 'fb-like',
   styles: [],
   template: `
-    <div class="fb-like" 
-      [attr.data-action]="action"
-      [attr.data-colorscheme]="colorscheme"
-      [attr.data-href]="href"
-      [attr.data-kid-directed-site]="kidDirectedSite"
-      [attr.data-layout]="layout"
-      [attr.data-ref]="ref"
-      [attr.data-share]="share"
-      [attr.data-show-faces]="showFaces"
-      [attr.data-size]="size"
-      [attr.data-width]="width"
-    ><ng-content></ng-content></div>
+    <div class="fb-like"
+         [attr.data-action]="action"
+         [attr.data-colorscheme]="colorscheme"
+         [attr.data-href]="href"
+         [attr.data-kid-directed-site]="kidDirectedSite"
+         [attr.data-layout]="layout"
+         [attr.data-ref]="ref"
+         [attr.data-share]="share"
+         [attr.data-show-faces]="showFaces"
+         [attr.data-size]="size"
+         [attr.data-width]="width"
+    >
+      <ng-content></ng-content>
+    </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
