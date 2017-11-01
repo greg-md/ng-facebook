@@ -78,11 +78,11 @@ export class AppComponent implements OnInit {
   constructor(public facebook: FacebookService) { }
 
   ngOnInit() {
-    this.facebook.init();
+    this.facebook.init().subscribe();
   }
   
   changeLanguage(newLanguage) {
-    this.facebook.init({}, newLanguage);
+    this.facebook.init({}, newLanguage).subscribe();
   }
 }
 ```
@@ -572,7 +572,7 @@ export class AppComponent implements OnInit {
 
   changeLocale() {
     this.facebookService.load('ro_RO').subscribe(sdk => {
-      this.facebookService.reloadRenderedElements();
+      this.facebookService.reloadRenderedElements().subscribe();
     });
   }
 }
