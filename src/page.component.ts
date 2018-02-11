@@ -1,4 +1,7 @@
-import { Component, Input, ElementRef, Renderer2, Inject, Optional, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component, Input, ElementRef, Renderer2, Inject, Optional, ChangeDetectionStrategy,
+  PLATFORM_ID
+} from '@angular/core';
 
 import { FacebookService } from './facebook.service';
 
@@ -33,18 +36,19 @@ export class FacebookPageComponent extends FacebookParseDirective {
   @Input() width: number = 340;
   @Input() height: number = 500;
   @Input() tabs: string = 'timeline';
-  @Input('hide-cover') hideCover: boolean = false;
-  @Input('show-facepile') showFacepile: boolean = true;
-  @Input('hide-cta') hideCta: boolean = false;
-  @Input('small-header') smallHeader: boolean = false;
-  @Input('adapt-container-width') adaptContainerWidth: boolean = true;
+  @Input() hideCover: boolean = false;
+  @Input() showFacepile: boolean = true;
+  @Input() hideCta: boolean = false;
+  @Input() smallHeader: boolean = false;
+  @Input() adaptContainerWidth: boolean = true;
 
   constructor(
     elementRef: ElementRef,
     facebook: FacebookService,
     renderer: Renderer2,
-    @Optional() @Inject(FB_PARSE_LAZY_LOAD) thresold: number
+    @Inject(PLATFORM_ID) platformId: Object,
+    @Optional() @Inject(FB_PARSE_LAZY_LOAD) threshold: number
   ) {
-    super(elementRef, facebook, renderer, thresold);
+    super(elementRef, facebook, renderer, platformId, threshold);
   }
 }

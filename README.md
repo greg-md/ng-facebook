@@ -91,11 +91,11 @@ export class AppComponent implements OnInit {
 
 All components have next attributes:
 
-#### lazy-load
+#### lazyLoad
 
 By default plugins are loaded when Facebook SDK is initialized.
-If you want plugins to be lazy loaded, use `lazy-load` attribute.
-Setting `lazy-load` to `200` causes image to load 200 pixels before it appears on viewport.
+If you want plugins to be lazy loaded, use `lazyLoad` attribute.
+Setting `lazyLoad` to `200` causes image to load 200 pixels before it appears on viewport.
 
 You can also define lazy loading threshold globally providing `FB_PARSE_LAZY_LOAD` token in module providers.
 
@@ -108,13 +108,13 @@ You can also define lazy loading threshold globally providing `FB_PARSE_LAZY_LOA
 
 #### container
 
-You can use also use `lazy-load` attribute inside a scrolling container, such as div with scroll bar.
+You can use also use `lazyLoad` attribute inside a scrolling container, such as div with scroll bar.
 
 _Example:_
 
 ```html
 <div #container>
-  <fb-page href="https://www.facebook.com/facebook" lazy-load="200" [container]="container"></fb-page>
+  <fb-page href="https://www.facebook.com/facebook" lazyLoad="200" [container]="container"></fb-page>
 </div>
 ```
 
@@ -155,31 +155,31 @@ Use a comma-separated list to add multiple tabs, i.e. `timeline, events`.
 
 Default: `timeline`.
 
-#### hide-cover
+#### hideCover
 
 Hide cover photo in the header.
 
 Default `false`.
 
-#### show-facepile
+#### showFacepile
 
 Show profile photos when friends like this.
 
 Default `true`.
 
-#### hide-cta
+#### hideCta
 
 Hide the custom call to action button (if available).
 
 Default `false`.
 
-#### small-header
+#### smallHeader
 
 Use the small header instead.
 
 Default `false`.
 
-#### adapt-container-width
+#### adaptContainerWidth
 
 Try to fit inside the container width.
 
@@ -216,7 +216,7 @@ Default: `light`.
 
 The absolute URL of the page that will be liked.
 
-#### kid-directed-site
+#### kidDirectedSite
 
 If your web site or online service, or a portion of your service,
 is directed to children under 13 [you must enable this](https://developers.facebook.com/docs/plugins/restrictions/).
@@ -249,7 +249,7 @@ Specifies whether to include a share button beside the Like button. This only wo
 
 Default: `false`.
 
-#### show-faces
+#### showFaces
 
 Specifies whether to display profile photos below the button (standard layout only).
 You must not enable this on [child-directed sites](https://developers.facebook.com/docs/plugins/restrictions/).
@@ -272,27 +272,27 @@ Please see [Layout Settings](#layout-settings) for more details.
 
 All directives have next attributes:
 
-#### lazy-load
+#### lazyLoad
 
 By default plugins are loaded when Facebook SDK is initialized.
-If you want plugins to be lazy loaded, use `lazy-load` attribute.
-Setting `lazy-load` to `200` causes image to load 200 pixels before it appears on viewport.
+If you want plugins to be lazy loaded, use `lazyLoad` attribute.
+Setting `lazyLoad` to `200` causes image to load 200 pixels before it appears on viewport.
 
 #### container
 
-You can use also use `lazy-load` attribute inside a scrolling container, such as div with scroll bar.
+You can use also use `lazyLoad` attribute inside a scrolling container, such as div with scroll bar.
 
 _Example:_
 
 ```html
 <div #container>
-    <div fb-parse lazy-load="200" [container]="container">
+    <div fb-parse lazyLoad="200" [container]="container">
       <div class="fb-like"
         data-href="http://greg.md"
         data-layout="standard"
         data-action="like"
         data-size="small"
-        data-show-faces="true"
+        data-showFaces="true"
         data-share="true"></div>
     </div>
 </div>
@@ -311,7 +311,7 @@ _Example:_
     data-layout="standard"
     data-action="like"
     data-size="small"
-    data-show-faces="true"
+    data-showFaces="true"
     data-share="true"></div>
 </div>
 ```
@@ -526,8 +526,8 @@ import { FacebookService } from '@greg-md/ng-facebook';
     <div class="fb-page" 
       data-href="https://www.facebook.com/facebook"
       data-width="380" 
-      data-hide-cover="false"
-      data-show-facepile="false" 
+      data-hideCover="false"
+      data-showFacepile="false" 
       data-show-posts="false"></div>
   `,
 })

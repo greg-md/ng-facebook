@@ -1,5 +1,5 @@
 import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformServer } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
@@ -86,7 +86,7 @@ export class FacebookService {
 
   load(locale: string = 'en_US'): Observable<Facebook> {
     return Observable.create(subscriber => {
-      if (!isPlatformBrowser(this.platformId)) {
+      if (isPlatformServer(this.platformId)) {
         return;
       }
 

@@ -1,4 +1,7 @@
-import { Component, Input, ElementRef, Renderer2, Inject, Optional, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component, Input, ElementRef, Renderer2, Inject, Optional, ChangeDetectionStrategy,
+  PLATFORM_ID
+} from '@angular/core';
 
 import { FacebookService } from './facebook.service';
 
@@ -29,11 +32,11 @@ export class FacebookLikeComponent extends FacebookParseDirective {
   @Input() action: 'like' | 'recommend' = 'like';
   @Input() colorscheme: 'light' | 'dark' = 'light';
   @Input() href: string;
-  @Input('kid-directed-site') kidDirectedSite: boolean = false;
+  @Input() kidDirectedSite: boolean = false;
   @Input() layout: 'standard' | 'button_count' | 'button' | 'box_count' = 'standard';
   @Input() ref: string;
   @Input() share: boolean = false;
-  @Input('show-faces') showFaces: boolean = false;
+  @Input() showFaces: boolean = false;
   @Input() size: 'large' | 'small' = 'small';
   @Input() width: number;
 
@@ -41,8 +44,9 @@ export class FacebookLikeComponent extends FacebookParseDirective {
     elementRef: ElementRef,
     facebook: FacebookService,
     renderer: Renderer2,
-    @Optional() @Inject(FB_PARSE_LAZY_LOAD) thresold: number
+    @Inject(PLATFORM_ID) platformId: Object,
+    @Optional() @Inject(FB_PARSE_LAZY_LOAD) threshold: number
   ) {
-    super(elementRef, facebook, renderer, thresold);
+    super(elementRef, facebook, renderer, platformId, threshold);
   }
 }

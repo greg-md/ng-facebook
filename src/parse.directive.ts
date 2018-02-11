@@ -1,9 +1,10 @@
 import {
-  Directive, Input, ElementRef, AfterContentInit, Renderer2, InjectionToken, Inject, Optional,
-  OnDestroy
+  Directive, Input, ElementRef, AfterViewInit, Renderer2, InjectionToken, Inject, Optional,
+  PLATFORM_ID, OnDestroy
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
-import { inViewport } from './facebook.utils';
+import { inViewport } from './dom';
 
 import { FacebookService } from './facebook.service';
 
@@ -12,23 +13,18 @@ export const FB_PARSE_LAZY_LOAD = new InjectionToken<string>('fb_parse_lazy_load
 @Directive({
   selector: '[fb-parse]',
 })
-export class FacebookParseDirective implements AfterContentInit, OnDestroy {
-  private _threshold: number;
-
-  @Input('lazy-load')
-  set threshold(threshold: number) {
+export class FacebookParseDirective implements AfterViewInit, OnDestroy {
+  @Input()
+  set lazyLoad(threshold: number) {
     if (threshold === null || (typeof threshold === 'string' && threshold === '')) {
-      this._threshold = null;
+      this.threshold = null;
     } else {
-      this._threshold = parseInt(threshold + '');
+      this.threshold = parseInt(threshold + '');
     }
   }
 
-  get threshold(): number {
-    return this._threshold;
-  }
-
-  @Input() container: HTMLElement | Window;
+  @Input()
+  container: HTMLElement | Window;
 
   scrollUnload: () => void;
   resizeUnload: () => void;
@@ -37,12 +33,12 @@ export class FacebookParseDirective implements AfterContentInit, OnDestroy {
     private elementRef: ElementRef,
     private facebook: FacebookService,
     private renderer: Renderer2,
-    @Optional() @Inject(FB_PARSE_LAZY_LOAD) thresold: number
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Optional() @Inject(FB_PARSE_LAZY_LOAD) private threshold: number,
   ) {
-    this.threshold = thresold;
   }
 
-  ngAfterContentInit() {
+  ngAfterViewInit() {
     if (this.threshold === null) {
       this.load();
     } else {
@@ -67,7 +63,12 @@ export class FacebookParseDirective implements AfterContentInit, OnDestroy {
   }
 
   tryLoading() {
-    if (inViewport(this.elementRef.nativeElement, {threshold: this.threshold, container: this.container})) {
+    if (
+      isPlatformBrowser(this.platformId) && inViewport(this.elementRef.nativeElement, {
+        threshold: this.threshold,
+        container: this.container
+      })
+    ) {
       this.load();
 
       this.unloadListeners();
