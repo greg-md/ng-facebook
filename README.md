@@ -14,7 +14,7 @@ Using Facebook SDK with Angular.
     * [fb-page](#fb-page) - Page Plugin;
     * [fb-like](#fb-like) - Like Button for the Web.
 * [Directives](#directives)
-    * [fb-parse](#fb-parse) - Parse facebook plugins.
+    * [fbParse](#fbparse) - Parse facebook plugins.
 * [Facebook Service](#facebook-service)
 * [License](#license)
 * [Huuuge Quote](#huuuge-quote)
@@ -114,7 +114,7 @@ _Example:_
 
 ```html
 <div #container>
-  <fb-page href="https://www.facebook.com/facebook" lazyLoad="200" [container]="container"></fb-page>
+  <fb-page href="https://www.facebook.com/facebook" [lazyLoad]="200" [container]="container"></fb-page>
 </div>
 ```
 
@@ -286,7 +286,7 @@ _Example:_
 
 ```html
 <div #container>
-    <div fb-parse lazyLoad="200" [container]="container">
+    <div fbParse [lazyLoad]="200" [container]="container">
       <div class="fb-like"
         data-href="http://greg.md"
         data-layout="standard"
@@ -298,14 +298,14 @@ _Example:_
 </div>
 ```
 
-## fb-parse
+## fbParse
 
 Parse Facebook plugins from current container.
 
 _Example:_
 
 ```html
-<div fb-parse>
+<div fbParse>
   <div class="fb-like"
     data-href="http://greg.md"
     data-layout="standard"
