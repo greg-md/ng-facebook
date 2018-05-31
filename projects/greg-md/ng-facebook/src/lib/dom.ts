@@ -35,8 +35,9 @@ export function aboveTheTop(element: HTMLElement, settings: ViewportSettings = {
     return false;
   }
 
-  let fold: number,
-    container = settings.container || window,
+  let fold: number;
+
+  const container = settings.container || window,
     threshold = settings.threshold || 0;
 
   if (container instanceof HTMLElement) {
@@ -53,8 +54,9 @@ export function rightOfFold(element: HTMLElement, settings: ViewportSettings = {
     return false;
   }
 
-  let fold: number,
-    container = settings.container || window,
+  let fold: number;
+
+  const container = settings.container || window,
     threshold = settings.threshold || 0;
 
   if (container instanceof HTMLElement) {
@@ -71,8 +73,9 @@ export function belowTheFold(element: HTMLElement, settings: ViewportSettings = 
     return false;
   }
 
-  let fold: number,
-    container = settings.container || window,
+  let fold: number;
+
+  const container = settings.container || window,
     threshold = settings.threshold || 0;
 
   if (container instanceof HTMLElement) {
@@ -89,8 +92,9 @@ export function leftOfBegin(element: HTMLElement, settings: ViewportSettings = {
     return false;
   }
 
-  let fold: number,
-    container = settings.container || window,
+  let fold: number;
+
+  const container = settings.container || window,
     threshold = settings.threshold || 0;
 
   if (container instanceof HTMLElement) {

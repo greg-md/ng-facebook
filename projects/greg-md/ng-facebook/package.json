@@ -1,6 +1,6 @@
 {
   "name": "@greg-md/ng-facebook",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Using Facebook SDK with Angular.",
   "repository": {
     "type": "git",
@@ -26,14 +26,8 @@
   "bugs": {
     "url": "https://github.com/greg-md/ng-facebook/issues"
   },
-  "main": "ng-facebook.umd.js",
-  "module": "ng-facebook.js",
-  "jsnext:main": "ng-facebook.js",
-  "typings": "ng-facebook.d.ts",
   "peerDependencies": {
-    "@angular/core": "^5.0.0",
-    "@angular/common": "^5.0.0",
-    "rxjs": "^5.5.2",
-    "zone.js": "^0.8.14"
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
   }
 }

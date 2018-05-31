@@ -32,11 +32,11 @@ export class FacebookLikeComponent extends FacebookParseDirective {
   @Input() action: 'like' | 'recommend' = 'like';
   @Input() colorscheme: 'light' | 'dark' = 'light';
   @Input() href: string;
-  @Input() kidDirectedSite: boolean = false;
+  @Input() kidDirectedSite = false;
   @Input() layout: 'standard' | 'button_count' | 'button' | 'box_count' = 'standard';
   @Input() ref: string;
-  @Input() share: boolean = false;
-  @Input() showFaces: boolean = false;
+  @Input() share = false;
+  @Input() showFaces = false;
   @Input() size: 'large' | 'small' = 'small';
   @Input() width: number;
 

@@ -1,7 +1,7 @@
 import { Inject, Injectable, NgZone, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { Observable, ReplaySubject } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 
 export interface FacebookInitParams {
   appId?: string;
@@ -44,12 +44,10 @@ export interface FacebookApiParams {
   [propName: string]: any;
 }
 
-export interface FacebookApiCallback {
-  (response?: {
+export type FacebookApiCallback = (response?: {
     error?: FacebookApiError;
     [propName: string]: any;
-  }): void;
-}
+  }) => void;
 
 export interface Facebook {
   XFBML: {
@@ -60,12 +58,17 @@ export interface Facebook {
 
   login: (callback?: (response: FacebookLoginResponse) => void, options?: FacebookLoginOptions) => void;
 
-  api: (path: string, method?: FacebookApiMethod | FacebookApiParams | FacebookApiCallback, params?: FacebookApiParams | FacebookApiCallback, callback?: FacebookApiCallback) => void;
+  api: (
+    path: string,
+    method?: FacebookApiMethod | FacebookApiParams | FacebookApiCallback,
+    params?: FacebookApiParams | FacebookApiCallback,
+    callback?: FacebookApiCallback
+  ) => void;
 }
 
 export const FACEBOOK_DEFAULTS: FacebookInitParams = {
   xfbml: false,
-  version: 'v2.10'
+  version: 'v3.0'
 };
 
 declare const FB: Facebook;
@@ -74,7 +77,9 @@ declare const window: {
   FB: Facebook;
 };
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FacebookService {
   sdk = new ReplaySubject<Facebook>(1);
 
@@ -103,7 +108,7 @@ export class FacebookService {
           fbRoot.parentNode.removeChild(fbRoot);
         }
 
-        let script = document.createElement('script');
+        const script = document.createElement('script');
 
         script.id = 'facebook-jssdk';
 
@@ -127,21 +132,21 @@ export class FacebookService {
 
         document.head.appendChild(script);
       });
-    }).map(sdk => {
+    }).pipe(map((sdk: Facebook) => {
       this.sdk.next(sdk);
 
       return sdk;
-    });
+    }));
   }
 
   init(params: FacebookInitParams = {}, locale: string = 'en_US') {
-    return this.load(locale).do<Facebook>(sdk => {
+    return this.load(locale).pipe<Facebook>(tap<Facebook>(sdk => {
       params = Object.assign({}, FACEBOOK_DEFAULTS, params);
 
       sdk.init(params);
 
       this.reloadRenderedElements().subscribe();
-    });
+    }));
   }
 
   login(options?: FacebookLoginOptions): Observable<FacebookAuth> {
@@ -203,7 +208,7 @@ export class FacebookService {
   reloadRenderedElements(): Observable<HTMLElement> {
     return Observable.create(subscriber => {
       this.sdk.subscribe(sdk => {
-        let elements = document.querySelectorAll('[fb-xfbml-state="rendered"]');
+        const elements = document.querySelectorAll('[fb-xfbml-state="rendered"]');
 
         let processing = elements.length;
 

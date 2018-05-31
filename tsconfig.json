@@ -1,15 +1,28 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./src",
-    "experimentalDecorators": true,
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
     "moduleResolution": "node",
-    "rootDir": "./src",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "lib": [
-      "es2015",
+      "es2017",
       "dom"
     ],
-    "target": "es5",
-    "skipLibCheck": true,
-    "types": []
+    "paths": {
+      "@greg-md/ng-facebook": [
+        "dist/greg-md/ng-facebook"
+      ],
+      "@greg-md/ng-facebook/*": [
+        "dist/greg-md/ng-facebook/*"
+      ]
+    }
   }
 }

@@ -33,14 +33,14 @@ import { FacebookParseDirective, FB_PARSE_LAZY_LOAD } from './parse.directive';
 })
 export class FacebookPageComponent extends FacebookParseDirective {
   @Input() href: string;
-  @Input() width: number = 340;
-  @Input() height: number = 500;
-  @Input() tabs: string = 'timeline';
-  @Input() hideCover: boolean = false;
-  @Input() showFacepile: boolean = true;
-  @Input() hideCta: boolean = false;
-  @Input() smallHeader: boolean = false;
-  @Input() adaptContainerWidth: boolean = true;
+  @Input() width = 340;
+  @Input() height = 500;
+  @Input() tabs = 'timeline';
+  @Input() hideCover = false;
+  @Input() showFacepile = true;
+  @Input() hideCta = false;
+  @Input() smallHeader = false;
+  @Input() adaptContainerWidth = true;
 
   constructor(
     elementRef: ElementRef,

@@ -11,16 +11,12 @@ import { FacebookService } from './facebook.service';
 export const FB_PARSE_LAZY_LOAD = new InjectionToken<string>('fb_parse_lazy_load');
 
 @Directive({
-  selector: '[fb-parse]',
+  selector: '[fbParse]',
 })
 export class FacebookParseDirective implements AfterViewInit, OnDestroy {
   @Input()
   set lazyLoad(threshold: number) {
-    if (threshold === null || (typeof threshold === 'string' && threshold === '')) {
-      this.threshold = null;
-    } else {
-      this.threshold = parseInt(threshold + '');
-    }
+    this.threshold = threshold;
   }
 
   @Input()
@@ -80,7 +76,12 @@ export class FacebookParseDirective implements AfterViewInit, OnDestroy {
   }
 
   unloadListeners() {
-    this.scrollUnload && this.scrollUnload();
-    this.resizeUnload && this.resizeUnload();
+    if (this.scrollUnload) {
+      this.scrollUnload();
+    }
+
+    if (this.resizeUnload) {
+      this.resizeUnload();
+    }
   }
 }
